@@ -14,9 +14,43 @@ public class RailroadInk {
      * @return true if the tile placement is well formed
      */
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
-        // FIXME Task 2: determine whether a tile placement is well-formed
-        return false;
-    }
+        int ascii = tilePlacementString.charAt(2);
+        char[]chars = tilePlacementString.toCharArray();
+
+        if (tilePlacementString.length()!=5){
+            return false;
+        }
+        if ((chars[0] != 'A')
+                && (chars[0]!= 'S')
+                && (chars[0] != 'B')){
+            return false;
+        }
+        if (chars[0]=='A'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (chars[0]=='S'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (chars[0]=='B'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>2||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (ascii<65){
+            return false;
+        }
+        if (ascii>71){
+            return false;
+        }
+        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))>6&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))<0){
+            return false;
+        }
+        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))>7&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))<0){
+            return false;
+        }
+        return true;    }
+
 
     /**
      * Determine whether a board string is well-formed:
