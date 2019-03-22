@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RailroadInk {
     /**
      * Determine whether a tile placement string is well-formed:
@@ -62,8 +65,30 @@ public class RailroadInk {
      * @return true if the board string is well-formed
      */
     public static boolean isBoardStringWellFormed(String boardString) {
-        // FIXME Task 3: determine whether a board string is well-formed
-        return false;
+        if (boardString==null){
+            return false;
+        }
+        Pattern pattern = Pattern.compile("S");
+        Matcher matcher = pattern.matcher(boardString);
+        int cont = 0;
+        while(matcher.find()){
+            cont++;
+            {if (cont>3){
+                return false;
+            }
+            }
+        }
+        int length = boardString.length();
+        if (length==0){
+            return false;
+        }
+        if (length%5!=0) {
+            return false;
+        }
+        if (length>155){
+            return false;
+        }
+        return true;
     }
 
 
