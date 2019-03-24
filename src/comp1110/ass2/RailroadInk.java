@@ -66,8 +66,7 @@ public class RailroadInk {
      */
     public static boolean isBoardStringWellFormed(String boardString) {
         if (boardString==null){
-            return false;
-        }
+            return false;        }
         Pattern pattern = Pattern.compile("S");
         Matcher matcher = pattern.matcher(boardString);
         int cont = 0;
