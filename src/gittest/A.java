@@ -6,5 +6,4 @@ public class A {
     {
         return "a";
     };
-    A a = new A();
 }
