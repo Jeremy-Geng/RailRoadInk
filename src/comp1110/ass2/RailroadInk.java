@@ -273,45 +273,11 @@ public class RailroadInk {
                 arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
                 arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
             }
-
-
+            
             char a0 = grid.getTile(arrayOfPlacement[0].charAt(2) - 'A', arrayOfPlacement[0].charAt(3)-'0').getGate();
             if(a0 != '!'){
                 if (!ifConnectedToGateCorrectly(arrayOfPlacement[0], arrayOfDice[0],a0)) test = false;
             }else{test = false;}
-
-//            if (test){
-//                for (int i = 1; i < arrayOfPlacement.length; i++) {
-//                    if (!ifConnectedToGate(arrayOfPlacement[i], arrayOfDice[i])) {
-//                        int count = 0;
-//                        for (int j = 0; j < arrayOfPlacement.length; j++) {
-//                            if (i == j) {
-//                                continue;
-//                            } else {
-//                                if (!areConnectedNeighbours(arrayOfPlacement[i], arrayOfPlacement[j])) {
-//                                    count++;
-//                                }
-//                            }
-//                        }
-//                        if (count == arrayOfPlacement.length - 1) {
-//                            test = false;
-//                            break;
-//                        }
-//                    }
-//                }
-//        }
-//            if(test){
-//                for(int i = 0;i < arrayOfPlacement.length ;i++){
-//                    for(int j = 0;j < arrayOfPlacement.length; j++){
-//                        if( j != i){
-//                            if(ifNeighbours(arrayOfPlacement[i],arrayOfPlacement[j])){
-//                                if(!areConnectedNeighbours(arrayOfPlacement[i],arrayOfPlacement[j])) test = false;
-//                            }
-//                        }
-//                    }
-//                    if(!test) break;
-//                  }
-//            }
 
             if(test){
                 for(int i = 1; i < arrayOfPlacement.length; i ++){
@@ -325,19 +291,8 @@ public class RailroadInk {
                             if(!test) break;
                     }
                     if(!test) break;
-
-//                    if(gate !='!' && !ifConnectedToGate(arrayOfPlacement[i], arrayOfDice[i])) test = false;
-//                    else if (!ifConnectedToGate(arrayOfPlacement[i], arrayOfDice[i])) {
-//                        for (int j = 0; j < i; j++) {
-//                            test = areConnectedNeighbours(arrayOfPlacement[i],arrayOfPlacement[j]);
-//                            if(test) break;
-//                        }
-//                    }
-//                    if(!test) break;
                 }
-
             }
-
         }
         return test;
     }
