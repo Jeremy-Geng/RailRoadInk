@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import comp1110.ass2.gui.Board;
 // This class is for integrating every part of the game together, the main logic will be designed in this class later.
 public class GameRRL {
     private Board grid;
