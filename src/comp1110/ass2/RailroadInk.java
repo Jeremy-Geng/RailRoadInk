@@ -173,6 +173,7 @@ public class RailroadInk {
 //        }else{ test = false;}
         test = ifNeighbours(tilePlacementStringA,tilePlacementStringB);
 
+//      check whether two neighbour tiles are valid connected
         if(test) {
         Dice oneTile = null;
         Dice anotherTile = null;
@@ -204,6 +205,7 @@ public class RailroadInk {
         return test;
     }
 
+//  ifNeighbours method is created for checking whether two tiles are neighbours
     public static boolean ifNeighbours(String a, String b){
         boolean test = true;
         if(a.charAt(2) == b.charAt(2)){
@@ -214,6 +216,8 @@ public class RailroadInk {
         return test;
     }
 
+
+// diceCreator method is created for creating a dice according to ths tilePlacementString
     public static Dice diceCreator(String tilePlacementString){
         Dice a = null;
         if(tilePlacementString.charAt(0) == 'A'){
@@ -226,6 +230,8 @@ public class RailroadInk {
         return  a;
     }
 
+
+//  diceRotatorOrFliper method is created for rotating or flipping one dice
     public static Dice diceRotatorOrFliper(Dice a, int b){
         if(b <= 3){
             for(int i = 1; i<=b;i++){
@@ -269,20 +275,24 @@ public class RailroadInk {
             String[] arrayOfPlacement = new String[numberOfTiles];
 
 //        To spilt Board String into tile Placement string
-            
+
             for (int i = 0; i < boardString.length(); i += 5) {
                 arrayOfPlacement[i / 5] = boardString.substring(i, i + 5);
             }
+
+//           To create one tile in the right orientation
             for (int i = 0; i < arrayOfDice.length; i++) {
                 arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
                 arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
             }
-            
+
+//            TO check whether the first placement of dice is vaild.
             char a0 = grid.getTile(arrayOfPlacement[0].charAt(2) - 'A', arrayOfPlacement[0].charAt(3)-'0').getGate();
             if(a0 != '!'){
                 if (!ifConnectedToGateCorrectly(arrayOfPlacement[0], arrayOfDice[0],a0)) test = false;
             }else{test = false;}
 
+//            To check whether the remaining placements of dice are valid.
             if(test){
                 for(int i = 1; i < arrayOfPlacement.length; i ++){
                     char gate = gate = grid.getTile(arrayOfPlacement[i].charAt(2) - 'A', arrayOfPlacement[i].charAt(3)-'0').getGate();
@@ -301,6 +311,7 @@ public class RailroadInk {
         return test;
     }
 
+//    ifConnectedToGateCorrectly method is for checking whether one dice is connected to one gate correctly.
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
         Board grid = new Board();
