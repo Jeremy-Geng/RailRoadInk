@@ -85,10 +85,14 @@ public class Viewer extends Application {
         Image FB1 = new Image("assets/FB1.png",true);
         Image FB2 = new Image("assets/FB2.png",true);
 
+        Image whiteSquare = new Image("assets/whitesquare.png");
+
         GridPane grid = new GridPane();
         grid.setLayoutX(235);
         grid.setLayoutY(50);
 
+
+        grid.getChildren().clear();
         for(int i = 0; i < rows; i++){
             RowConstraints row = new RowConstraints(80);
             grid.getRowConstraints().add(row);
@@ -97,6 +101,17 @@ public class Viewer extends Application {
             ColumnConstraints column = new ColumnConstraints(80);
             grid.getColumnConstraints().add(column);
         }
+
+        for(int i = 0; i < columns; i++){
+            for(int j = 0; j < rows;j++){
+                ImageView bg = new ImageView();
+                bg.setFitWidth(80);
+                bg.setFitHeight(80);
+                bg.setImage(whiteSquare);
+                grid.add(bg,i,j);
+            }
+        }
+
 
         for(int i = 0; i < arrayOfTiles.length;i++){
             int orientaion = 0;
@@ -310,6 +325,8 @@ public class Viewer extends Application {
         imageView.setFitHeight(80);
         imageView.setFitWidth(80);
         grid.add(imageView,column,row);
+
+
     }
 
 
