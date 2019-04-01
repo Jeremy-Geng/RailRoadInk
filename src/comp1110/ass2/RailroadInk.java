@@ -16,44 +16,44 @@ public class RailroadInk {
      * @return true if the tile placement is well formed
      */
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
-//        int ascii = tilePlacementString.charAt(2);
-//        char[]chars = tilePlacementString.toCharArray();
-//
-//        if (tilePlacementString.length()!=5){
-//            return false;
-//        }
-//        if ((chars[0] != 'A')
-//                && (chars[0]!= 'S')
-//                && (chars[0] != 'B')){
-//            return false;
-//        }
-//        if (chars[0]=='A'){
-//            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-//                return false;
-//        }
-//        if (chars[0]=='S'){
-//            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-//                return false;
-//        }
-//        if (chars[0]=='B'){
-//            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>2||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-//                return false;
-//        }
-//        if (ascii<65){
-//            return false;
-//        }
-//        if (ascii>71){
-//            return false;
-//        }
-//        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))>6&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))<0){
-//            return false;
-//        }
-//        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))>7&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))<0){
-//            return false;
-//
+ /*      int ascii = tilePlacementString.charAt(2);
+        char[]chars = tilePlacementString.toCharArray();
+
+        if (tilePlacementString.length()!=5){
+            return false;
+        }
+        if ((chars[0] != 'A')
+                && (chars[0]!= 'S')
+                && (chars[0] != 'B')){
+            return false;
+        }
+        if (chars[0]=='A'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (chars[0]=='S'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (chars[0]=='B'){
+            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>2||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
+                return false;
+        }
+        if (ascii<65){
+            return false;
+        }
+        if (ascii>71){
+            return false;
+        }
+        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))>6&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))<0){
+            return false;
+        }
+        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))>7&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))<0){
+            return false;*/
+
         boolean test = true;
 
-//        According to the documentation, there should be five conditions to test the tile Placement String
+//        According to the documentation, there should be six conditions to test the tile Placement String
 
 //        Condition 1:
         if(tilePlacementString.length() != 5) test = false;
@@ -91,29 +91,29 @@ public class RailroadInk {
      * @return true if the board string is well-formed
      */
     public static boolean isBoardStringWellFormed(String boardString) {
-//        if (boardString==null){
-//            return false;        }
-//        Pattern pattern = Pattern.compile("S");
-//        Matcher matcher = pattern.matcher(boardString);
-//        int cont = 0;
-//        while(matcher.find()){
-//            cont++;
-//            {if (cont>3){
-//                return false;
-//            }
-//            }
-//        }
-//        int length = boardString.length();
-//        if (length==0){
-//            return false;
-//        }
-//        if (length%5!=0) {
-//            return false;
-//        }
-//        if (length>155){
-//            return false;
-//        }
-//        return true;
+        /*if (boardString==null){
+            return false;        }
+        Pattern pattern = Pattern.compile("S");
+        Matcher matcher = pattern.matcher(boardString);
+        int cont = 0;
+        while(matcher.find()){
+            cont++;
+            {if (cont>3){
+                return false;
+            }
+            }
+        }
+        int length = boardString.length();
+        if (length==0){
+            return false;
+        }
+        if (length%5!=0) {
+            return false;
+        }
+        if (length>155){
+            return false;
+        }
+        return true;*/
 
         boolean test = true;
 
@@ -131,7 +131,9 @@ public class RailroadInk {
 //        Condition 2
             int numberOfTiles = boardString.length() / 5;
             String[] arrayOfTiles = new String[numberOfTiles];
+
 //        To spilt Board String into tile Placement string
+
             for (int i = 0; i < boardString.length(); i += 5) {
                 arrayOfTiles[i / 5] = boardString.substring(i, i + 5);
             }
@@ -265,7 +267,9 @@ public class RailroadInk {
             int numberOfTiles = boardString.length() / 5;
             Dice[] arrayOfDice = new Dice[numberOfTiles];
             String[] arrayOfPlacement = new String[numberOfTiles];
+
 //        To spilt Board String into tile Placement string
+            
             for (int i = 0; i < boardString.length(); i += 5) {
                 arrayOfPlacement[i / 5] = boardString.substring(i, i + 5);
             }

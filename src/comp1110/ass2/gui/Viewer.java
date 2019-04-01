@@ -39,6 +39,7 @@ public class Viewer extends Application {
     void makePlacement(String placement) {
         int numberOfTiles = placement.length() / 5;
         String[] arrayOfTiles = new String[numberOfTiles];
+
 //        To spilt Board String into tile Placement string
         for (int i = 0; i < placement.length(); i += 5) {
             arrayOfTiles[i / 5] = placement.substring(i, i + 5);
