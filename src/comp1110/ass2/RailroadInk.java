@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+import java.util.Random;
+
 public class RailroadInk {
     private Dice a;
 
@@ -340,9 +342,18 @@ public class RailroadInk {
      * @return a String representing the die roll e.g. A0A4A3B2
      */
     public static String generateDiceRoll() {
+        Random random = new Random();
+        int r1 = random.nextInt(6);
+        int r2 = random.nextInt(6);
+        int r3 = random.nextInt(6);
+        int r4 = random.nextInt(3);
+        String string;
+        string = String.format("A%dA%dA%dB%d",r1,r2,r3,r4);
         // FIXME Task 7: generate a dice roll
-        return "";
+        return string;
     }
+
+
 
     /**
      * Given the current state of a game board, output an integer representing the sum of all the following factors
