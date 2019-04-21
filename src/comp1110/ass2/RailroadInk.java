@@ -277,7 +277,7 @@ public class RailroadInk {
                 arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
                 arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
             }
-            
+
             char a0 = grid.getTile(arrayOfPlacement[0].charAt(2) - 'A', arrayOfPlacement[0].charAt(3)-'0').getGate();
             if(a0 != '!'){
                 if (!ifConnectedToGateCorrectly(arrayOfPlacement[0], arrayOfDice[0],a0)) test = false;
