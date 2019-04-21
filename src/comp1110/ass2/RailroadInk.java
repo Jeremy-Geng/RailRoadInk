@@ -329,8 +329,17 @@ public class RailroadInk {
      * @return a String representing the die roll e.g. A0A4A3B2
      */
     public static String generateDiceRoll() {
-        // FIXME Task 7: generate a dice roll
-        return "";
+        String randomdiceroll = "";
+        for(int i = 0;i<4;i++){
+            int faceNumberOfA =(int)Math.random()*6;
+            int faceNUmberOfb =(int)Math.random()*3;
+            if(i<3){
+                randomdiceroll = randomdiceroll + "A" + faceNumberOfA;
+            }else{
+                randomdiceroll = randomdiceroll + "B" + faceNUmberOfb;
+            }
+        }
+        return randomdiceroll;
     }
 
     /**
