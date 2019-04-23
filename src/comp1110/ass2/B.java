@@ -7,4 +7,6 @@ public class B extends Dice{
         if(b == 1) setPassge('H','R','!','!');
         if(b == 2) setPassge('H','R','H','R');
     }
+
+
 }

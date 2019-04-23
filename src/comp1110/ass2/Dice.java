@@ -1,11 +1,12 @@
 package comp1110.ass2;
-// this class is to design three different kinds of dice, for convenience, we applied enum.
+// this class is to design three different kinds of dice.
 public class Dice {
     public char northPassage;
     public char eastPassage;
     public char southPassage;
     public char westPassage;
     public int faceNumber;
+    public String identityInfo;
 
     public void setPassge(char northPassage,char eastPassag,char southPassage,char westPassage){
         this.northPassage = northPassage;
@@ -42,5 +43,9 @@ public class Dice {
         char transition = eastPassage;
         eastPassage = westPassage;
         westPassage = transition;
+    }
+
+    public void setIdentityInfo(String identityInfo){
+        this.identityInfo = identityInfo;
     }
 }

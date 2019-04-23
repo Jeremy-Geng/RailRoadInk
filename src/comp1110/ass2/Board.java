@@ -5,7 +5,7 @@ import comp1110.ass2.Tile;
 
 public class Board {
 
-    private Tile[][] board = new Tile[7][7];
+    public Tile[][] board = new Tile[7][7];
 
     Board(){
         for(int i = 0; i < board.length; i++){
@@ -28,13 +28,11 @@ public class Board {
         board[6][5].setGate('H');
     }
 
-    public Tile[][] getBoard(){
-        return board;
-    }
-
     public Tile getTile(int a, int b){
         return board[a][b];
     }
+
+
 
 }
 

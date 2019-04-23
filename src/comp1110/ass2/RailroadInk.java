@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RailroadInk {
     private Dice a;
 
@@ -165,12 +168,7 @@ public class RailroadInk {
      */
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
         boolean test = true;
-//        Check whether these two tiles ar neighbours
-//        if(tilePlacementStringA.charAt(2) == tilePlacementStringB.charAt(2)){
-//             if(Math.abs(tilePlacementStringA.charAt(3) - tilePlacementStringB.charAt(3)) != 1) test = false;
-//        }else if ( tilePlacementStringA.charAt(3) == tilePlacementStringB.charAt(3)) {
-//            if(Math.abs(tilePlacementStringA.charAt(2) - tilePlacementStringB.charAt(2)) != 1) test = false;
-//        }else{ test = false;}
+
         test = ifNeighbours(tilePlacementStringA,tilePlacementStringB);
 
         if(test) {
@@ -185,9 +183,9 @@ public class RailroadInk {
 
             if (tilePlacementStringA.charAt(2) == tilePlacementStringB.charAt(2)) {
                 if (tilePlacementStringA.charAt(3) < tilePlacementStringB.charAt(3)) {
-                    if (oneTile.getEastPassage() != anotherTile.getWestPassage()) test = false;
+                    if (oneTile.getEastPassage() != anotherTile.getWestPassage() || oneTile.getEastPassage() == '!') test = false;
                 } else {
-                    if (oneTile.getWestPassage() != anotherTile.getEastPassage()) test = false;
+                    if (oneTile.getWestPassage() != anotherTile.getEastPassage()|| oneTile.getWestPassage() == '!') test = false;
                 }
             }
 
@@ -223,6 +221,7 @@ public class RailroadInk {
         }else if(tilePlacementString.charAt(0) == 'S'){
             a = new S(tilePlacementString.charAt(1) - '0');
         }
+        a.setIdentityInfo(tilePlacementString);
         return  a;
     }
 
@@ -285,7 +284,7 @@ public class RailroadInk {
 
             if(test){
                 for(int i = 1; i < arrayOfPlacement.length; i ++){
-                    char gate = gate = grid.getTile(arrayOfPlacement[i].charAt(2) - 'A', arrayOfPlacement[i].charAt(3)-'0').getGate();
+                    char gate = grid.getTile(arrayOfPlacement[i].charAt(2) - 'A', arrayOfPlacement[i].charAt(3)-'0').getGate();
                     if(gate == '!'){
                         for (int j = 0; j < i; j++) {
                             test = areConnectedNeighbours(arrayOfPlacement[i],arrayOfPlacement[j]);
@@ -303,7 +302,6 @@ public class RailroadInk {
 
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
-        Board grid = new Board();
             if (placementofDice.charAt(2) == 'A') {
                 if (dice.getNorthPassage() != gate) test = false;
             } else if (placementofDice.charAt(2) == 'B' || placementofDice.charAt(2) == 'D'|| placementofDice.charAt(2) == 'F' ) {
@@ -354,9 +352,365 @@ public class RailroadInk {
      * @return integer (positive or negative) for score *not* considering longest rail/highway
      */
     public static int getBasicScore(String boardString) {
-        // FIXME Task 8: compute the basic score
-        return -1;
+        int basicScore = 0;
+        if(isValidPlacementSequence(boardString)){
+            Board grid = new Board();
+            int numberOfTiles = boardString.length() / 5;
+            Dice[] arrayOfDice = new Dice[numberOfTiles];
+            String[] arrayOfPlacement = new String[numberOfTiles];
+
+            for (int i = 0; i < boardString.length(); i += 5) {
+                arrayOfPlacement[i / 5] = boardString.substring(i, i + 5);
+            }
+
+            for (int i = 0; i < arrayOfDice.length; i++) {
+                arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
+                arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
+            }
+
+            for(int i = 0;i<arrayOfDice.length;i++){
+                grid.board[arrayOfPlacement[i].charAt(2) - 'A'][arrayOfPlacement[i].charAt(3) - '0'].setDice(arrayOfDice[i]);
+            }
+
+            ArrayList<Tile> filledTiles = new ArrayList<Tile>();
+
+            for(int i =0;i < grid.board.length;i++){
+                for(int j = 0;j<grid.board[i].length;j++){
+                    if(grid.board[i][j].ifFilled()) {
+                        filledTiles.add(grid.board[i][j]);
+                    }
+                }
+            }
+
+            ArrayList<Tile> gatesFilled = new ArrayList<Tile>();
+            for(int i = 0;i<arrayOfDice.length;i++){
+                if(grid.board[arrayOfPlacement[i].charAt(2) - 'A'][arrayOfPlacement[i].charAt(3) - '0'].getGate() != '!'){
+                    gatesFilled.add(grid.board[arrayOfPlacement[i].charAt(2) - 'A'][arrayOfPlacement[i].charAt(3) - '0']);
+                }
+            }
+            int pointsPartOne = 0;
+            for(int i = 0;i<gatesFilled.size();i++) {
+                if (!gatesFilled.get(i).ifPassed()) {
+                    int numberofGatesConnect = 0;
+                    if (gatesFilled.get(i).ifOverpass()) {
+                        if (gatesFilled.get(i).getDice().identityInfo.charAt(2) == 'A' || gatesFilled.get(i).getDice().identityInfo.charAt(2) == 'G') {
+                            gatesFilled.get(i).ruleOverpass("column");
+                        } else {
+                            gatesFilled.get(i).ruleOverpass("row");
+                        }
+                    }
+                    gatesFilled.get(i).travellerPasses(new Traveller());
+                    ArrayList<Tile> eNeighbours = new ArrayList<Tile>();
+                    eNeighbours.add(gatesFilled.get(i));
+                    while (eNeighbours.size() != 0) {
+                        ArrayList<Tile> newENeighbous = new ArrayList<Tile>();
+                        for (int j = 0; j < eNeighbours.size(); j++) {
+                            eNeighbours.get(j).travellerPasses(new Traveller());
+                            if (eNeighbours.get(j).getGate() != '!') {
+                                numberofGatesConnect++;
+                            }
+                            ArrayList<Tile> a = searchRoad(eNeighbours.get(j), filledTiles);
+                            for (int n = 0; n < a.size(); n++) {
+                                newENeighbous.add(a.get(n));
+                            }
+                        }
+                        for(int m = 0; m < newENeighbous.size()-1;m++){
+                            if(newENeighbous.get(m+1).getDice().identityInfo.equals(newENeighbous.get(m).getDice().identityInfo)){
+                                newENeighbous.remove(m);
+                            }
+                        }
+                        eNeighbours = newENeighbous;
+
+                    }
+                    pointsPartOne = pointsPartOne + pointsAwardedforGatesConnected(numberofGatesConnect);
+                }
+            }
+
+
+            int pointsPartTwo = 0;
+            for(int i = 0;i < grid.board.length;i++){
+                for(int j = 0;j < grid.board[i].length;j++){
+                    if(grid.board[i][j].getDice() != null){
+                        if(i == 0 && j == 0){
+                            if(grid.board[i][j].getDice().getEastPassage() != '!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() != '!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+
+                        }
+                        else if(i == 0 && j ==6){
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() != '!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                        }
+                        else if(i == 6 && j == 0){
+                            if(grid.board[i][j].getDice().getEastPassage() !='!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+
+                        }
+                        else if(i == 6 && j == 6){
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+
+                        }
+                        else if(i == 0 && j >= 1 && j <=5){
+                            if(grid.board[i][j].getDice().getEastPassage() !='!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() != '!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                        }
+                        else if(i == 6 && j >= 1 && j <=5){
+                            if(grid.board[i][j].getDice().getEastPassage() !='!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+
+                        }
+                        else if(j == 0 && i >= 1 && i <=5){
+                            if(grid.board[i][j].getDice().getEastPassage() !='!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() !='!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                        }
+                        else if(j == 6 && i >= 1 && i <=5){
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() !='!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                        }else{
+                            if(grid.board[i][j].getDice().getEastPassage() !='!'){
+                                if(grid.board[i][j+1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j+1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getWestPassage() !='!'){
+                                if(grid.board[i][j-1].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i][j-1].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getSouthPassage() !='!'){
+                                if(grid.board[i+1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i+1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                            if(grid.board[i][j].getDice().getNorthPassage() != '!'){
+                                if(grid.board[i-1][j].getDice() == null) pointsPartTwo++;
+                                else{
+                                    if(!areConnectedNeighbours(grid.board[i][j].getDice().identityInfo,grid.board[i-1][j].getDice().identityInfo)) pointsPartTwo++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            int pointsPartThree = 0;
+            for(int i = 2;i < 5;i++){
+                for(int j = 2;j < 5;j++){
+                    if(grid.board[i][j].getDice() != null) pointsPartThree++;
+                }
+            }
+
+            basicScore = pointsPartOne + pointsPartThree - pointsPartTwo;
+        }
+        return basicScore;
     }
+
+    public static ArrayList<Tile> searchRoad(Tile whereTravellerStays, ArrayList<Tile> filledTiles){
+        ArrayList<Tile> effectiveNeighbours = new ArrayList<Tile>();
+        for(int i = 0;i < filledTiles.size();i++){
+            if(!filledTiles.get(i).ifPassed() || !filledTiles.get(i).ifRowOfOverpassPassed() ||!filledTiles.get(i).ifRowOfOverpassPassed()) {
+                if (areConnectedNeighbours(whereTravellerStays.getDice().identityInfo, filledTiles.get(i).getDice().identityInfo)) {
+                    if(whereTravellerStays.ifOverpass()){
+                        if(whereTravellerStays.mark.equals("row")) {
+                                if (whereTravellerStays.getDice().identityInfo.charAt(2) == filledTiles.get(i).getDice().identityInfo.charAt(2)) {
+                                    if(filledTiles.get(i).ifOverpass()){
+                                        if(!filledTiles.get(i).ifRowOfOverpassPassed()){
+                                            effectiveNeighbours.add(filledTiles.get(i));
+                                            whereTravellerStays.rowTravellerPasses(new Traveller());
+                                            filledTiles.get(i).ruleOverpass(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()));
+                                        }
+                                    }else{
+                                    effectiveNeighbours.add(filledTiles.get(i));
+                                    whereTravellerStays.rowTravellerPasses(new Traveller());
+                                    }
+                                }
+
+                        }else if(whereTravellerStays.mark.equals("column")){
+                            if(whereTravellerStays.getDice().identityInfo.charAt(3) == filledTiles.get(i).getDice().identityInfo.charAt(3)){
+                                if(filledTiles.get(i).ifOverpass()){
+                                    if(!filledTiles.get(i).ifColumnOfOverpassPassed()){
+                                        effectiveNeighbours.add(filledTiles.get(i));
+                                        whereTravellerStays.columnTravellerPasses(new Traveller());
+                                        filledTiles.get(i).ruleOverpass(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()));
+                                    }
+
+                                }else{
+                                effectiveNeighbours.add(filledTiles.get(i));
+                                whereTravellerStays.columnTravellerPasses(new Traveller());
+                                }
+                            }
+                        }
+                    }
+                    else{
+                    if(filledTiles.get(i).ifOverpass()){
+                        if(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()).equals("row")){
+                            if(!filledTiles.get(i).ifRowOfOverpassPassed()){
+                                effectiveNeighbours.add(filledTiles.get(i));
+                                filledTiles.get(i).ruleOverpass(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()));
+
+                            }
+                        }else if(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()).equals("column")){
+                            if(!filledTiles.get(i).ifColumnOfOverpassPassed()){
+                                effectiveNeighbours.add(filledTiles.get(i));
+                                filledTiles.get(i).ruleOverpass(decomposeOverpass(whereTravellerStays.getDice(),filledTiles.get(i).getDice()));
+                            }
+                        }
+                    }else{
+                        effectiveNeighbours.add(filledTiles.get(i));
+                    }
+                    }
+                }
+            }
+        }
+        return effectiveNeighbours;
+     }
+
+     public static String decomposeOverpass(Dice a, Dice overpass ){
+           String direction = "";
+           if(a.identityInfo.charAt(2) == overpass.identityInfo.charAt(2)){
+               direction = "row";
+           }else{
+               direction = "column";
+           }
+           return  direction;
+     }
+
+     public static int pointsAwardedforGatesConnected(int numberofGatesConnect){
+        int points = 0;
+        if(numberofGatesConnect == 2){
+            points = 4;
+        }else if(numberofGatesConnect ==3 ){
+            points = 8;
+        }else if(numberofGatesConnect == 4){
+            points = 12;
+        }else if(numberofGatesConnect == 5){
+            points = 16;
+        }else if (numberofGatesConnect == 6){
+            points = 20;
+        }else if(numberofGatesConnect == 7){
+            points = 24;
+        }else if( numberofGatesConnect == 8){
+            points = 28;
+        }else if(numberofGatesConnect == 9){
+            points = 32;
+        }else if(numberofGatesConnect == 10){
+            points = 36;
+        }else if(numberofGatesConnect == 11){
+            points = 40;
+        }else if(numberofGatesConnect == 12){
+            points = 45;
+        }
+
+        return points;
+     }
 
     /**
      * Given a valid boardString and a dice roll for the round,
@@ -388,9 +742,8 @@ public class RailroadInk {
 
     public static void main(String[] args) {
         RailroadInk a = new RailroadInk();
-        System.out.println(isValidPlacementSequence("S0D01"));
-
-
+        System.out.println(getBasicScore("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34A3E32A1B01B2B10A1B21A0A63A4D01A1G41B0G12S2D10A4C10B2A10A2B33A1A30S4E11A4E21A3C21A3C31S5F11")
+        );
     }
 }
 
