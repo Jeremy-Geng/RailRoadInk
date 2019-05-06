@@ -723,33 +723,46 @@ public class RailroadInk {
      */
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
-        availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString,5)));
+        //availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
         //From diceRoll get available tiles in an array
         //Mix and match available locations and tiles
         //filter out illegal moves and return list of valid moves
         return null;
     }
     //From current state, get individual placement strings
-    private static String[] splitIntoIndividualPlacementStrings(String text, int size) {
-        List<String> placementStrings = new ArrayList<>();
+    public static String[] splitIntoIndividualPlacementStrings(String text) {
+        List<String> piece = new ArrayList<>();
+
         int length = text.length();
-        for (int i = 0; i < length; i += size) {
-            placementStrings.add(text.substring(i, Math.min(length, i + size)));
+        for (int i = 0; i < length; i += 5) {
+            piece.add(text.substring(i, Math.min(length, i + 5)));
         }
-        String[] individualPlacements = placementStrings.toArray(new String[0]);
+        String[] individualPlacements = piece.toArray(new String[0]);
         return individualPlacements;
     }
-    //Check index 2 and 3 of each placement string for the location of each piece
-    private static String[] tileLocations(String[] text){
-        return null;
+    //Returns location of each piece in the board (index 2 and 3 of each placement string)
+    private static String[] tileLocations(String [] text){
+        List<String> locations = new ArrayList<>();
+
+        for (int i = 0; i < text.length; i +=1){
+            String elem = text[i];
+            String loc = elem.substring(2, 4);
+            locations.add(loc);
+        }
+        String [] unavailableLocations = locations.toArray(new String [0]);
+        return unavailableLocations;
     }
     //Establish available locations on board
-    private static String[] availableLocations(String[] text){
-        String[] AllPositions;
-        AllPositions = new String[] {"A0", "A1", "A2", "A3", "A4", "A5", "A6","B0", "B1", "B2", "B3", "B4", "B5", "B6","C0", "C1", "C2", "C3", "C4", "C5", "C6","D0", "D1", "D2", "D3", "D4", "D5", "D6","E0", "E1", "E2", "E3", "E4", "E5", "E6","F0", "F1", "F2", "F3", "F4", "F5", "F6","G0", "G1", "G2", "G3", "G4", "G5", "G6"};
+    //private static String[] availableLocations(String[] text){
+    //    String[] AllPositions = new String[] {"A0", "A1", "A2", "A3", "A4", "A5", "A6","B0", "B1", "B2", "B3", "B4", "B5", "B6","C0", "C1", "C2", "C3", "C4", "C5", "C6","D0", "D1", "D2", "D3", "D4", "D5", "D6","E0", "E1", "E2", "E3", "E4", "E5", "E6","F0", "F1", "F2", "F3", "F4", "F5", "F6","G0", "G1", "G2", "G3", "G4", "G5", "G6"};
         //eliminate elements in common between AllPositions and tileLocations
-        return null;
-    }
+    //    for (int i = 0; i < text.length; i +=1){
+    //        if (AllPositions.contains(text[i])){
+    //            AllPositions.remove(indexOf(text[i]));
+    //        }
+    //    }
+    //    return AllPositions;
+    //}
 
     /**
      * Given the current state of a game board, output an integer representing the sum of all the factors contributing
