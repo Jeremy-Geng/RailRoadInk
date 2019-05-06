@@ -83,7 +83,6 @@ public class Tile {
         }else{
             mark = "column";
         }
-
     }
 
     public boolean ifRowOfOverpassPassed(){
@@ -99,7 +98,6 @@ public class Tile {
         if(columnTraveller != null || !this.ifOverpass()){
             test = true;
         }
-
         return  test;
     }
 

@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -225,6 +226,13 @@ public class RailroadInk {
         a.setIdentityInfo(tilePlacementString);
         return  a;
     }
+    public static boolean ifDiceCreate(String a){
+        boolean test = true;
+        if (a.charAt(1)>5){
+            test = false;
+        }
+        return test;
+    }
 
     public static Dice diceRotatorOrFliper(Dice a, int b){
         if(b <= 3){
@@ -240,6 +248,18 @@ public class RailroadInk {
             }
         }
         return  a;
+    }
+    public static boolean ifDiceRight(Dice a, int b){
+        boolean test = true;
+        if (b<=3){
+            a.flip();
+            test = false;
+        }
+        if (b>3){
+            a.rotete90Degree();
+            test = false;
+        }
+        return test;
     }
 
 
@@ -259,6 +279,7 @@ public class RailroadInk {
      * @param boardString a board string representing some placement sequence
      * @return true if placement sequence is valid
      */
+
     public static boolean isValidPlacementSequence(String boardString) {
         boolean test = true;
         Board grid = new Board();
@@ -301,6 +322,7 @@ public class RailroadInk {
         return test;
     }
 
+//  THe method is for checking whether one tile is connected to gate correctly.
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
             if (placementofDice.charAt(2) == 'A') {
