@@ -259,6 +259,7 @@ public class RailroadInk {
      * @param boardString a board string representing some placement sequence
      * @return true if placement sequence is valid
      */
+
     public static boolean isValidPlacementSequence(String boardString) {
         boolean test = true;
         Board grid = new Board();
@@ -301,6 +302,7 @@ public class RailroadInk {
         return test;
     }
 
+//  THe method is for checking whether one tile is connected to gate correctly.
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
             if (placementofDice.charAt(2) == 'A') {
