@@ -8,9 +8,9 @@ public class Dice {
     public int faceNumber;
     public String identityInfo;
 
-    public void setPassge(char northPassage,char eastPassag,char southPassage,char westPassage){
+    public void setPassge(char northPassage,char eastPassage,char southPassage,char westPassage){
         this.northPassage = northPassage;
-        this.eastPassage = eastPassag;
+        this.eastPassage = eastPassage;
         this.southPassage = southPassage;
         this.westPassage = westPassage;
     }
