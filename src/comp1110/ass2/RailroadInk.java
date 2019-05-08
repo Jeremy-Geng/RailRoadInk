@@ -762,11 +762,12 @@ public class RailroadInk {
         String[] individualPlacements = piece.toArray(new String[0]);
         return individualPlacements;
     }
+
     //Returns location of each piece in the board (index 2 and 3 of each placement string)
     private static String[] tileLocations(String [] text){
         List<String> locations = new ArrayList<>();
 
-        for (int i = 0; i < text.length; i +=1){
+        for (int i = 0; i < text.length; i ++){
             String elem = text[i];
             String loc = elem.substring(2, 4);
             locations.add(loc);
@@ -803,8 +804,14 @@ public class RailroadInk {
 
     public static void main(String[] args) {
         RailroadInk a = new RailroadInk();
-        System.out.println(getBasicScore("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34A3E32A1B01B2B10A1B21A0A63A4D01A1G41B0G12S2D10A4C10B2A10A2B33A1A30S4E11A4E21A3C21A3C31S5F11")
-        );
+//        System.out.println(getBasicScore("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34A3E32A1B01B2B10A1B21A0A63A4D01A1G41B0G12S2D10A4C10B2A10A2B33A1A30S4E11A4E21A3C21A3C31S5F11")
+//        );
+        String test = "A4A12B2B16A1B01A1B23S1B32A1A32B1B44B2A44A4C16A3D15A4D01A5D23A4E20B1F24A2F17A1F01B0G16A5C34A4C43A5C53A3D50A4D61S4E50A0F51A1F67S2E46B1E31A1F30A2G36A1G41B1G52";
+        System.out.println(test);
+        String[] splits = a.splitIntoIndividualPlacementStrings(test);
+        for (String loc : a.tileLocations(splits)){
+            System.out.println(loc);
+        }
     }
 }
 
