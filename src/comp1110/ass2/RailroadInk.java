@@ -3,6 +3,7 @@ package comp1110.ass2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
+import java.util.Random;
 
 public class RailroadInk {
     private Dice a;
@@ -350,9 +351,10 @@ public class RailroadInk {
      */
     public static String generateDiceRoll() {
         String randomdiceroll = "";
+        Random rand = new Random();
         for(int i = 0;i<4;i++){
-            int faceNumberOfA =(int)Math.random()*6;
-            int faceNUmberOfb =(int)Math.random()*3;
+            int faceNumberOfA = rand.nextInt(6);
+            int faceNUmberOfb = rand.nextInt(3);
             if(i<3){
                 randomdiceroll = randomdiceroll + "A" + faceNumberOfA;
             }else{
