@@ -3,6 +3,7 @@ package comp1110.ass2;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -23,7 +24,7 @@ public class SplitIntoIndividualPlacementStringsTest {
     @Test
     public void testTwo() {
         String boardString = "A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34A3E32A1B01B2B10A1B21A0A63A4D01A1G41B0G12S2D10A4C10B2A10A2B33A1A30S4E11A4E21A3C21A3C31S5F11";
-        String[] placements = {"A3D61", "A3D53", "B0C52", "A0B52", "A2B63", "A4D41", "B0E60", "A0F61", "A3D31", "A3D23", "A2G30", "B0F34", "A3E32", "A1B01", "B2B10", "A1B21", "A0A63", "A4D01", "A1G41", "B0G12", "S2D10", "A4C10", "B2A10", "A2B33", "A1A30", "S4E11", "A4E21", "A3C21", "A3C31", "S5F12"};
+        String[] placements = {"A3D61", "A3D53", "B0C52", "A0B52", "A2B63", "A4D41", "B0E60", "A0F61", "A3D31", "A3D23", "A2G30", "B0F34", "A3E32", "A1B01", "B2B10", "A1B21", "A0A63", "A4D01", "A1G41", "B0G12", "S2D10", "A4C10", "B2A10", "A2B33", "A1A30", "S4E11", "A4E21", "A3C21", "A3C31", "S5F11"};
 
         testSplit(boardString, placements);
     }

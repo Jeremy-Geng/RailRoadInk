@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -763,49 +762,127 @@ public class RailroadInk {
      * @return a String representing an ordered sequence of valid piece placements for the current round
      * @see RailroadInk#generateDiceRoll()
      */
+    // @author  Kathia Anyosa
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
-        //availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
-        //From diceRoll get available tiles in an array
-        //Mix and match available locations and tiles
-        //filter out illegal moves and return list of valid moves
+        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
+        String[] tls = tiles(diceRoll);
+        String[] moves = possibleMoves(tls, available);
+        String[] valid = validMoves(boardString, moves);
+        for (int i = 0; i+1 < valid.length; i++){
+            String generatedMoves = valid[i]+valid[i+1];
+        }
         return null;
     }
-    //From current state, get individual placement strings
-    public static String[] splitIntoIndividualPlacementStrings(String text) {
-        List<String> piece = new ArrayList<>();
 
-        int length = text.length();
-        for (int i = 0; i < length; i += 5) {
-            piece.add(text.substring(i, Math.min(length, i + 5)));
+    // @author  Kathia Anyosa
+    //Filter out illegal moves and return list of valid moves
+    public static String[] validMoves(String boardString, String[] possible){
+        ArrayList<String> valid = new ArrayList<>();
+        for (int i = 0; i < possible.length; i ++){
+            String combination = boardString + possible[i];
+            if (isValidPlacementSequence(combination)){
+                valid.add(possible[i]);
+            }
+        }
+        String[] validMoves = valid.toArray(new String[0]);
+        return validMoves;
+    }
+
+    // @author  Kathia Anyosa
+    //Generates all possible moves by mixing available locations and tiles
+    public static String[] possibleMoves(String[] tiles, String[] availableLocations){
+        ArrayList<String> moves = new ArrayList<>();
+        for (int i = 0; i < availableLocations.length; i ++){
+            moves.add(tiles[0]+availableLocations[i]+"0");
+            moves.add(tiles[0]+availableLocations[i]+"1");
+            moves.add(tiles[0]+availableLocations[i]+"2");
+            moves.add(tiles[0]+availableLocations[i]+"3");
+            moves.add(tiles[0]+availableLocations[i]+"4");
+            moves.add(tiles[0]+availableLocations[i]+"5");
+            moves.add(tiles[0]+availableLocations[i]+"6");
+            moves.add(tiles[0]+availableLocations[i]+"7");
+
+            moves.add(tiles[1]+availableLocations[i]+"0");
+            moves.add(tiles[1]+availableLocations[i]+"1");
+            moves.add(tiles[1]+availableLocations[i]+"2");
+            moves.add(tiles[1]+availableLocations[i]+"3");
+            moves.add(tiles[1]+availableLocations[i]+"4");
+            moves.add(tiles[1]+availableLocations[i]+"5");
+            moves.add(tiles[1]+availableLocations[i]+"6");
+            moves.add(tiles[1]+availableLocations[i]+"7");
+
+            moves.add(tiles[2]+availableLocations[i]+"0");
+            moves.add(tiles[2]+availableLocations[i]+"1");
+            moves.add(tiles[2]+availableLocations[i]+"2");
+            moves.add(tiles[2]+availableLocations[i]+"3");
+            moves.add(tiles[2]+availableLocations[i]+"4");
+            moves.add(tiles[2]+availableLocations[i]+"5");
+            moves.add(tiles[2]+availableLocations[i]+"6");
+            moves.add(tiles[2]+availableLocations[i]+"7");
+
+            moves.add(tiles[3]+availableLocations[i]+"0");
+            moves.add(tiles[3]+availableLocations[i]+"1");
+            moves.add(tiles[3]+availableLocations[i]+"2");
+            moves.add(tiles[3]+availableLocations[i]+"3");
+            moves.add(tiles[3]+availableLocations[i]+"4");
+            moves.add(tiles[3]+availableLocations[i]+"5");
+            moves.add(tiles[3]+availableLocations[i]+"6");
+            moves.add(tiles[3]+availableLocations[i]+"7");
+        }
+        String[] possibleMoves = moves.toArray(new String[0]);
+        return possibleMoves;
+    }
+
+    // @author  Kathia Anyosa
+    //From diceRoll get available tiles in an array
+    public  static String[] tiles(String diceRoll){
+        List<String> tile = new ArrayList<>();
+        //int length = diceRoll.length();
+        for (int i = 0; i < diceRoll.length(); i += 2) {
+            tile.add(diceRoll.substring(i, Math.min(diceRoll.length(), i + 2)));
+        }
+        String[] individualTiles = tile.toArray(new String[0]);
+        return individualTiles;
+    }
+
+    // @author  Kathia Anyosa
+    //From current state, get individual placement strings
+    public static String[] splitIntoIndividualPlacementStrings(String boardString){
+        List<String> piece = new ArrayList<>();
+        //int length = boardString.length();
+        for (int i = 0; i < boardString.length(); i += 5) {
+            piece.add(boardString.substring(i, Math.min(boardString.length(), i + 5)));
         }
         String[] individualPlacements = piece.toArray(new String[0]);
         return individualPlacements;
     }
 
+    // @author  Kathia Anyosa
     //Returns location of each piece in the board (index 2 and 3 of each placement string)
-    private static String[] tileLocations(String [] text){
+    public static String[] tileLocations(String [] placements){
         List<String> locations = new ArrayList<>();
-
-        for (int i = 0; i < text.length; i ++){
-            String elem = text[i];
-            String loc = elem.substring(2, 4);
-            locations.add(loc);
+        for (int i = 0; i < placements.length; i ++){
+            String elem = placements[i];
+            String location = elem.substring(2, 4);
+            locations.add(location);
         }
-        String [] unavailableLocations = locations.toArray(new String [0]);
-        return unavailableLocations;
+        String [] takenLocations = locations.toArray(new String[0]);
+        return takenLocations;
     }
-    //Establish available locations on board
-    //private static String[] availableLocations(String[] text){
-    //    String[] AllPositions = new String[] {"A0", "A1", "A2", "A3", "A4", "A5", "A6","B0", "B1", "B2", "B3", "B4", "B5", "B6","C0", "C1", "C2", "C3", "C4", "C5", "C6","D0", "D1", "D2", "D3", "D4", "D5", "D6","E0", "E1", "E2", "E3", "E4", "E5", "E6","F0", "F1", "F2", "F3", "F4", "F5", "F6","G0", "G1", "G2", "G3", "G4", "G5", "G6"};
-        //eliminate elements in common between AllPositions and tileLocations
-    //    for (int i = 0; i < text.length; i +=1){
-    //        if (AllPositions.contains(text[i])){
-    //            AllPositions.remove(indexOf(text[i]));
-    //        }
-    //    }
-    //    return AllPositions;
-    //}
+
+    // @author  Kathia Anyosa
+    //Establish available locations on board and eliminate elements in common between AllPositions and tileLocations
+    public static String[] availableLocations(String[] takenLocations){
+        ArrayList<String> AllPositions = new ArrayList<>(Arrays.asList("A0", "A1", "A2", "A3", "A4", "A5", "A6","B0", "B1", "B2", "B3", "B4", "B5", "B6","C0", "C1", "C2", "C3", "C4", "C5", "C6","D0", "D1", "D2", "D3", "D4", "D5", "D6","E0", "E1", "E2", "E3", "E4", "E5", "E6","F0", "F1", "F2", "F3", "F4", "F5", "F6","G0", "G1", "G2", "G3", "G4", "G5", "G6"));
+        for (int i = 0; i < takenLocations.length; i ++){
+            if (AllPositions.get(i).equals(takenLocations[i])){
+                AllPositions.remove(takenLocations[i]);
+            }
+        }
+        String[] availableLocations = AllPositions.toArray(new String[0]);
+        return availableLocations;
+    }
 
     /**
      * Given the current state of a game board, output an integer representing the sum of all the factors contributing
@@ -824,14 +901,5 @@ public class RailroadInk {
 
     public static void main(String[] args) {
         RailroadInk a = new RailroadInk();
-//        System.out.println(getBasicScore("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34A3E32A1B01B2B10A1B21A0A63A4D01A1G41B0G12S2D10A4C10B2A10A2B33A1A30S4E11A4E21A3C21A3C31S5F11")
-//        );
-        String test = "A4A12B2B16A1B01A1B23S1B32A1A32B1B44B2A44A4C16A3D15A4D01A5D23A4E20B1F24A2F17A1F01B0G16A5C34A4C43A5C53A3D50A4D61S4E50A0F51A1F67S2E46B1E31A1F30A2G36A1G41B1G52";
-        System.out.println(test);
-        String[] splits = a.splitIntoIndividualPlacementStrings(test);
-        for (String loc : a.tileLocations(splits)){
-            System.out.println(loc);
-        }
     }
 }
-
