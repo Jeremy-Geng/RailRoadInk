@@ -1,9 +1,13 @@
-Reviewer: Mary Jones (u2345678)
-Component: <...>
-Author: Bob Smith (u3456789)
+Reviewer: Shuhao Geng (u6725016)
+Component: isTilePlacementWellFormed method, isBoardStringWellFormed method,
+Author: Siqi GU (u3456789)
 
 Review Comments:
 
-1. HelloWorld.java:1-16 Use proper capitalization.
-2. HelloWorldTest.java:21 This test will pass with "hello world", when it should fail.
-3. <...>
+1.The good thing is that these two methods can function well and pass all tests.
+
+2.Codes can be more cleaner and simpler if some intertal static methods can be created and implemented.
+
+3.More comments can be applied to explain the logic of these methods.
+
+4.For isBoardStringWellFormed method, names of variables could be more meangingful.
