@@ -744,6 +744,7 @@ public class RailroadInk {
      * @return a String representing an ordered sequence of valid piece placements for the current round
      * @see RailroadInk#generateDiceRoll()
      */
+    // @author  Kathia Anyosa
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
         String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
@@ -756,6 +757,7 @@ public class RailroadInk {
         return null;
     }
 
+    // @author  Kathia Anyosa
     //Filter out illegal moves and return list of valid moves
     public static String[] validMoves(String boardString, String[] possible){
         ArrayList<String> valid = new ArrayList<>();
@@ -769,6 +771,7 @@ public class RailroadInk {
         return validMoves;
     }
 
+    // @author  Kathia Anyosa
     //Generates all possible moves by mixing available locations and tiles
     public static String[] possibleMoves(String[] tiles, String[] availableLocations){
         ArrayList<String> moves = new ArrayList<>();
@@ -813,6 +816,7 @@ public class RailroadInk {
         return possibleMoves;
     }
 
+    // @author  Kathia Anyosa
     //From diceRoll get available tiles in an array
     public  static String[] tiles(String diceRoll){
         List<String> tile = new ArrayList<>();
@@ -824,6 +828,7 @@ public class RailroadInk {
         return individualTiles;
     }
 
+    // @author  Kathia Anyosa
     //From current state, get individual placement strings
     public static String[] splitIntoIndividualPlacementStrings(String boardString){
         List<String> piece = new ArrayList<>();
@@ -835,6 +840,7 @@ public class RailroadInk {
         return individualPlacements;
     }
 
+    // @author  Kathia Anyosa
     //Returns location of each piece in the board (index 2 and 3 of each placement string)
     public static String[] tileLocations(String [] placements){
         List<String> locations = new ArrayList<>();
@@ -846,6 +852,8 @@ public class RailroadInk {
         String [] takenLocations = locations.toArray(new String[0]);
         return takenLocations;
     }
+
+    // @author  Kathia Anyosa
     //Establish available locations on board and eliminate elements in common between AllPositions and tileLocations
     public static String[] availableLocations(String[] takenLocations){
         ArrayList<String> AllPositions = new ArrayList<>(Arrays.asList("A0", "A1", "A2", "A3", "A4", "A5", "A6","B0", "B1", "B2", "B3", "B4", "B5", "B6","C0", "C1", "C2", "C3", "C4", "C5", "C6","D0", "D1", "D2", "D3", "D4", "D5", "D6","E0", "E1", "E2", "E3", "E4", "E5", "E6","F0", "F1", "F2", "F3", "F4", "F5", "F6","G0", "G1", "G2", "G3", "G4", "G5", "G6"));
