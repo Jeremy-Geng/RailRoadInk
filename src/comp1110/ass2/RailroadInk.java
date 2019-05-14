@@ -21,6 +21,8 @@ public class RailroadInk {
      * @param tilePlacementString a candidate tile placement string
      * @return true if the tile placement is well formed
      */
+
+//   @author Siqi Gu
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
  /*      int ascii = tilePlacementString.charAt(2);
         char[]chars = tilePlacementString.toCharArray();
@@ -96,6 +98,8 @@ public class RailroadInk {
      * @param boardString a board string describing the placement of one or more pieces
      * @return true if the board string is well-formed
      */
+
+    //   @author Siqi Gu
     public static boolean isBoardStringWellFormed(String boardString) {
         /*if (boardString==null){
             return false;        }
@@ -169,6 +173,8 @@ public class RailroadInk {
      *
      * @return true if the placements are connected neighbours
      */
+
+//  @author Shuhao Geng
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
         boolean test = true;
 
@@ -205,6 +211,7 @@ public class RailroadInk {
         return test;
     }
 
+    //  @author Shuhao Geng
     public static boolean ifNeighbours(String a, String b){
         boolean test = true;
         if(a.charAt(2) == b.charAt(2)){
@@ -215,6 +222,7 @@ public class RailroadInk {
         return test;
     }
 
+    //  @author Shuhao Geng
     public static Dice diceCreator(String tilePlacementString){
         Dice a = null;
         if(tilePlacementString.charAt(0) == 'A'){
@@ -235,6 +243,7 @@ public class RailroadInk {
         return test;
     }
 
+    //  @author Shuhao Geng
     public static Dice diceRotatorOrFliper(Dice a, int b){
         if(b <= 3){
             for(int i = 1; i<=b;i++){
@@ -250,6 +259,8 @@ public class RailroadInk {
         }
         return  a;
     }
+
+    //  @author Shuhao Geng
     public static boolean ifDiceRight(Dice a, int b){
         boolean test = true;
         if (b<=3){
@@ -281,6 +292,7 @@ public class RailroadInk {
      * @return true if placement sequence is valid
      */
 
+    //  @author Shuhao Geng
     public static boolean isValidPlacementSequence(String boardString) {
         boolean test = true;
         Board grid = new Board();
@@ -323,7 +335,8 @@ public class RailroadInk {
         return test;
     }
 
-//  THe method is for checking whether one tile is connected to gate correctly.
+    //  @author Shuhao Geng
+    //  THe method is for checking whether one tile is connected to gate correctly.
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
             if (placementofDice.charAt(2) == 'A') {
@@ -350,6 +363,8 @@ public class RailroadInk {
      *
      * @return a String representing the die roll e.g. A0A4A3B2
      */
+
+    //  @author Siqi Gu
     public static String generateDiceRoll() {
         String randomdiceroll = "";
         Random rand = new Random();
@@ -376,6 +391,8 @@ public class RailroadInk {
      * @param boardString a board string representing a completed game
      * @return integer (positive or negative) for score *not* considering longest rail/highway
      */
+
+    //  @author Shuhao Geng
     public static int getBasicScore(String boardString) {
         int basicScore = 0;
         if(isValidPlacementSequence(boardString)){
@@ -638,6 +655,7 @@ public class RailroadInk {
         return basicScore;
     }
 
+    //  @author Shuhao Geng
     public static ArrayList<Tile> searchRoad(Tile whereTravellerStays, ArrayList<Tile> filledTiles){
         ArrayList<Tile> effectiveNeighbours = new ArrayList<Tile>();
         for(int i = 0;i < filledTiles.size();i++){
