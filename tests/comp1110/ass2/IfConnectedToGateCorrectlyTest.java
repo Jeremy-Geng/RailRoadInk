@@ -8,10 +8,12 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 public class IfConnectedToGateCorrectlyTest {
+
+    boolean[] results = {true,false};
+
     @Test
     public void ConnectedToGateCorrectlyTest(){
         Board grid = new Board();
-        boolean[] results = {true,false};
         Dice[] dices = new Dice[connectedCorrectlyTiles.length];
         for(int i = 0;i< connectedCorrectlyTiles.length;i++){
             dices[i] = RailroadInk.diceCreator(connectedCorrectlyTiles[i]);
@@ -27,7 +29,6 @@ public class IfConnectedToGateCorrectlyTest {
     @Test
     public void ConnectedToGateInCorrectlyTest(){
         Board grid = new Board();
-        boolean[] results = {true,false};
         Dice[] dices = new Dice[connectedIncorrectlyTiles.length];
         for(int i = 0;i< connectedIncorrectlyTiles.length;i++){
             dices[i] = RailroadInk.diceCreator(connectedIncorrectlyTiles[i]);
