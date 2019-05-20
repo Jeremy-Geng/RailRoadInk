@@ -29,7 +29,8 @@ public class Game extends Application {
     private static Scene scene;
     private static Group group = new Group();
     private static GridPane board= new GridPane();
-    public int count = 0;
+    public static int counter = 0;
+
 
 
     private  FXimageView[][] tiles = new FXimageView[9][9];
@@ -260,22 +261,17 @@ public class Game extends Application {
             }
             for (int i = 0; i < specialDiceImages.length; i++) {
                 onDragDetected(specialDiceImages[i], i);
+
             }
             for (int i = 1; i < tiles.length - 1; i++) {
                 for (int j = 1; j < tiles[i].length - 1; j++) {
                     onDragOver(tiles[i][j], tiles, i, j);
                     onDragEntered(tiles[i][j]);
                     onDragExit(tiles[i][j]);
-                    onDragDropped(tiles[i][j], specialDiceImages);
-                    count++;
+                    onDragDroppedForSpecialDices(tiles[i][j], specialDiceImages);
                 }
             }
-            if (count==3){
-                for (int i = 0;i<sDices.length;i++)
-                group.getChildren().removeAll(sDices[i]);
-                for (int i = 0;i<specialDiceImages.length;i++)
-                group.getChildren().removeAll(specialDiceImages[i]);
-            }
+
 
 
 
@@ -712,6 +708,31 @@ public class Game extends Application {
             e.setDropCompleted(success);
             e.consume();
 
+        });
+    }
+    public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
+        if (counter==3){
+            return;
+        }
+        fXimageView.setOnDragDropped(e -> {
+
+            String transferName = e.getDragboard().getString().substring(0, 2);
+            String tansferOrientation = e.getDragboard().getString().substring(2, 3);
+            String tansferPassage = e.getDragboard().getString().substring(3, 7);
+            String placementInfo = transferName + fXimageView.name + tansferOrientation;
+
+
+            boolean success = false;
+            fXimageView.setImage(e.getDragboard().getImage());
+            fXimageView.name = placementInfo;
+            fXimageView.ifFilled = true;
+            success = true;
+
+            int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
+            cleanImage[i].setImage(null);
+            e.setDropCompleted(success);
+            e.consume();
+            counter++;
         });
     }
 
