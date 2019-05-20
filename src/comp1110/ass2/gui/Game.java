@@ -271,8 +271,10 @@ public class Game extends Application {
                 }
             }
             if (count==3){
-                group.getChildren().removeAll(sDices);
-                group.getChildren().removeAll(specialDiceImages);
+                for (int i = 0;i<sDices.length;i++)
+                group.getChildren().removeAll(sDices[i]);
+                for (int i = 0;i<specialDiceImages.length;i++)
+                group.getChildren().removeAll(specialDiceImages[i]);
             }
 
 
