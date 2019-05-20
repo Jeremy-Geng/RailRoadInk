@@ -15,10 +15,15 @@ public class Tile {
 
     public Traveller columnTraveller = null;
 
+    public boolean ifFilled = false;
+
+    public String name;
+
 
 
     public void setDice(Dice dice) {
         this.dice = dice;
+        ifFilled = true;
     }
 
     public void clearDice(){
