@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 public class S extends Dice{
-    S(int s){
+    public S(int s){
         faceNumber = s;
         if(s == 0) setPassge('H','H','R','H');
         if(s == 1) setPassge('H','R','R','R');

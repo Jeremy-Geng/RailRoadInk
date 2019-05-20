@@ -246,14 +246,14 @@ public class RailroadInk {
     public static Dice diceRotatorOrFliper(Dice a, int b){
         if(b <= 3){
             for(int i = 1; i<=b;i++){
-                a.rotete90Degree();
+                a.rotate90Degree();
             }
         }
 
         if(b > 3){
             a.flip();
             for(int i =1;i<=b-4; i++){
-                a.rotete90Degree();
+                a.rotate90Degree();
             }
         }
         return  a;
@@ -267,7 +267,7 @@ public class RailroadInk {
             test = false;
         }
         if (b>3){
-            a.rotete90Degree();
+            a.rotate90Degree();
             test = false;
         }
         return test;
@@ -765,13 +765,15 @@ public class RailroadInk {
     // @author  Kathia Anyosa
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
-        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
-        String[] tls = tiles(diceRoll);
-        String[] moves = possibleMoves(tls, available);
-        String[] valid = validMoves(boardString, moves);
-        for (int i = 0; i+1 < valid.length; i++){
-            String generatedMoves = valid[i]+valid[i+1];
-        }
+//        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
+//        String[] tls = tiles(diceRoll);
+//        String[] moves = possibleMoves(tls, available);
+//        String[] valid = validMoves(boardString, moves);
+//        for (int i = 0; i+1 < valid.length; i++){
+//            String generatedMoves = valid[i]+valid[i+1];
+//        }
+
+
         return null;
     }
 

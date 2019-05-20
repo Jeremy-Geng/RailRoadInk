@@ -94,14 +94,7 @@ public class Viewer extends Application {
 
 
         grid.getChildren().clear();
-        for(int i = 0; i < rows; i++){
-            RowConstraints row = new RowConstraints(80);
-            grid.getRowConstraints().add(row);
-        }
-        for(int i = 0;i < columns;i++){
-            ColumnConstraints column = new ColumnConstraints(80);
-            grid.getColumnConstraints().add(column);
-        }
+
 
         for(int i = 0; i < columns; i++){
             for(int j = 0; j < rows;j++){
@@ -110,6 +103,7 @@ public class Viewer extends Application {
                 bg.setFitHeight(80);
                 bg.setImage(whiteSquare);
                 grid.add(bg,i,j);
+
             }
         }
 
@@ -326,8 +320,6 @@ public class Viewer extends Application {
         imageView.setFitHeight(80);
         imageView.setFitWidth(80);
         grid.add(imageView,column,row);
-
-
     }
 
 

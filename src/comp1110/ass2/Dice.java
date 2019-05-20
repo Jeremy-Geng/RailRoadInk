@@ -8,11 +8,23 @@ public class Dice {
     public int faceNumber;
     public String identityInfo;
 
+    public char backupNorthPassage;
+    public char backupEastPassage;
+    public char backupSouthPassage;
+    public char backupWestPassage;
+
     public void setPassge(char northPassage,char eastPassage,char southPassage,char westPassage){
         this.northPassage = northPassage;
+        backupNorthPassage = northPassage;
+
         this.eastPassage = eastPassage;
+        backupEastPassage = eastPassage;
+
         this.southPassage = southPassage;
+        backupSouthPassage = southPassage;
+
         this.westPassage = westPassage;
+        backupWestPassage = westPassage;
     }
 
     public char getNorthPassage() {
@@ -31,7 +43,7 @@ public class Dice {
         return westPassage;
     }
 
-    public void rotete90Degree(){
+    public void rotate90Degree(){
         char transition = eastPassage;
         eastPassage = northPassage;
         northPassage = westPassage;
@@ -43,6 +55,13 @@ public class Dice {
         char transition = eastPassage;
         eastPassage = westPassage;
         westPassage = transition;
+    }
+
+    public void returnToStart(){
+        northPassage = backupNorthPassage;
+        eastPassage = backupEastPassage;
+        southPassage = backupSouthPassage;
+        westPassage = backupWestPassage;
     }
 
     public void setIdentityInfo(String identityInfo){
