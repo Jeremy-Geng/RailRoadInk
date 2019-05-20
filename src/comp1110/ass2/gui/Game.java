@@ -19,7 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-
+import java.util.concurrent.CountDownLatch;
 
 
 public class Game extends Application {
@@ -29,6 +29,7 @@ public class Game extends Application {
     private static Scene scene;
     private static Group group = new Group();
     private static GridPane board= new GridPane();
+    public int count = 0;
 
 
     private  FXimageView[][] tiles = new FXimageView[9][9];
@@ -261,7 +262,6 @@ public class Game extends Application {
                 onDragDetected(specialDiceImages[i], i);
             }
             for (int i = 1; i < tiles.length - 1; i++) {
-                int count = 0;
                 for (int j = 1; j < tiles[i].length - 1; j++) {
                     onDragOver(tiles[i][j], tiles, i, j);
                     onDragEntered(tiles[i][j]);
@@ -269,11 +269,15 @@ public class Game extends Application {
                     onDragDropped(tiles[i][j], specialDiceImages);
                     count++;
                 }
-                if (count==3){
-                    group.getChildren().removeAll(sDices[i]);
-                    group.getChildren().removeAll(specialDiceImages[i]);
-                }
             }
+            if (count==3){
+                group.getChildren().removeAll(sDices);
+                group.getChildren().removeAll(specialDiceImages);
+            }
+
+
+
+
 
 
 
