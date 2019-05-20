@@ -270,7 +270,8 @@ public class Game extends Application {
                     count++;
                 }
                 if (count==3){
-                    onDragDetected(null,0);
+                    group.getChildren().removeAll(sDices[i]);
+                    group.getChildren().removeAll(specialDiceImages[i]);
                 }
             }
 
