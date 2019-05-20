@@ -211,63 +211,70 @@ public class Game extends Application {
         board.setLayoutY(25);
     }
 
-    public void creatDiceforAround(){
+    public void creatDiceforAround() {
         //special Dices
-        FXimageView[] specialDiceImages  = new FXimageView[6];
-        for(int i = 0;i<specialDiceImages.length;i++){
-            specialDiceImages[i] = new FXimageView();
-        }
-        specialDiceImages[0].setImage(S0);
-        specialDiceImages[0].dice = new S(0);
-        specialDiceImages[0].name = "S0";
-        specialDiceImages[1].setImage(S1);
-        specialDiceImages[1].dice = new S(1);
-        specialDiceImages[1].name = "S1";
-        specialDiceImages[2].setImage(S2);
-        specialDiceImages[2].dice = new S(2);
-        specialDiceImages[2].name = "S2";
-        specialDiceImages[3].setImage(S3);
-        specialDiceImages[3].dice = new S(3);
-        specialDiceImages[3].name = "S3";
-        specialDiceImages[4].setImage(S4);
-        specialDiceImages[4].dice = new S(4);
-        specialDiceImages[4].name = "S4";
-        specialDiceImages[5].setImage(S5);
-        specialDiceImages[5].dice = new S(5);
-        specialDiceImages[5].name = "S5";
-        Button[] sDices = new Button[6];
-        for(int i = 0;i< sDices.length;i++) {
-            int j = i + 1;
-            if (j == 1) sDices[i] = new Button("Rotate " + j + "st Dice");
-            else if (j == 2) sDices[i] = new Button("Rotate " + j + "nd Dice");
-            else if (j == 3) sDices[i] = new Button("Rotate " + j + "rd Dice");
-            else if (j == 4) sDices[i] = new Button("Rotate " + j + "th Dice");
-            else if (j == 5) sDices[i] = new Button("Rotate " + j + "th Dice");
-            else if (j == 6) sDices[i] = new Button("Rotate " + j + "th Dice");
-            sDices[i].setLayoutX(100);
-            sDices[i].setLayoutY(90+125*i);
-            sDices[i].setEffect(new SepiaTone());
-            rotatedice(sDices[i],specialDiceImages[i]);
-            group.getChildren().addAll(sDices[i]);
-        }
-        for(int i = 0; i<specialDiceImages.length;i++){
-            specialDiceImages[i].setFitHeight(50);
-            specialDiceImages[i].setFitWidth(50);
-            specialDiceImages[i].setLayoutX(125);
-            specialDiceImages[i].setLayoutY(30+120*i);
-            group.getChildren().add(specialDiceImages[i]);
-        }
-        for (int i = 0;i<specialDiceImages.length;i++){
-            onDragDetected(specialDiceImages[i],i);
-        }
-        for(int i = 1;i<tiles.length-1;i++){
-            for(int j = 1;j<tiles[i].length-1;j++){
-                onDragOver(tiles[i][j],tiles,i,j);
-                onDragEntered(tiles[i][j]);
-                onDragExit(tiles[i][j]);
-                onDragDropped(tiles[i][j],specialDiceImages);
+            FXimageView[] specialDiceImages = new FXimageView[6];
+            for (int i = 0; i < specialDiceImages.length; i++) {
+                specialDiceImages[i] = new FXimageView();
             }
-        }
+            specialDiceImages[0].setImage(S0);
+            specialDiceImages[0].dice = new S(0);
+            specialDiceImages[0].name = "S0";
+            specialDiceImages[1].setImage(S1);
+            specialDiceImages[1].dice = new S(1);
+            specialDiceImages[1].name = "S1";
+            specialDiceImages[2].setImage(S2);
+            specialDiceImages[2].dice = new S(2);
+            specialDiceImages[2].name = "S2";
+            specialDiceImages[3].setImage(S3);
+            specialDiceImages[3].dice = new S(3);
+            specialDiceImages[3].name = "S3";
+            specialDiceImages[4].setImage(S4);
+            specialDiceImages[4].dice = new S(4);
+            specialDiceImages[4].name = "S4";
+            specialDiceImages[5].setImage(S5);
+            specialDiceImages[5].dice = new S(5);
+            specialDiceImages[5].name = "S5";
+            Button[] sDices = new Button[6];
+            for (int i = 0; i < sDices.length; i++) {
+                int j = i + 1;
+                if (j == 1) sDices[i] = new Button("Rotate " + j + "st Dice");
+                else if (j == 2) sDices[i] = new Button("Rotate " + j + "nd Dice");
+                else if (j == 3) sDices[i] = new Button("Rotate " + j + "rd Dice");
+                else if (j == 4) sDices[i] = new Button("Rotate " + j + "th Dice");
+                else if (j == 5) sDices[i] = new Button("Rotate " + j + "th Dice");
+                else if (j == 6) sDices[i] = new Button("Rotate " + j + "th Dice");
+                sDices[i].setLayoutX(100);
+                sDices[i].setLayoutY(90 + 125 * i);
+                sDices[i].setEffect(new SepiaTone());
+                rotatedice(sDices[i], specialDiceImages[i]);
+                group.getChildren().addAll(sDices[i]);
+            }
+            for (int i = 0; i < specialDiceImages.length; i++) {
+                specialDiceImages[i].setFitHeight(50);
+                specialDiceImages[i].setFitWidth(50);
+                specialDiceImages[i].setLayoutX(125);
+                specialDiceImages[i].setLayoutY(30 + 120 * i);
+                group.getChildren().add(specialDiceImages[i]);
+            }
+            for (int i = 0; i < specialDiceImages.length; i++) {
+                onDragDetected(specialDiceImages[i], i);
+            }
+            for (int i = 1; i < tiles.length - 1; i++) {
+                int count = 0;
+                for (int j = 1; j < tiles[i].length - 1; j++) {
+                    onDragOver(tiles[i][j], tiles, i, j);
+                    onDragEntered(tiles[i][j]);
+                    onDragExit(tiles[i][j]);
+                    onDragDropped(tiles[i][j], specialDiceImages);
+                    count++;
+                }
+                if (count==3){
+                    onDragDetected(null,0);
+                }
+            }
+
+
 
 
 
@@ -678,12 +685,12 @@ public class Game extends Application {
         });
     }
 
-    public static void onDragDropped(FXimageView fXimageView,FXimageView[] cleanImage){
-        fXimageView.setOnDragDropped(e ->{
+    public static void onDragDropped(FXimageView fXimageView,FXimageView[] cleanImage) {
+        fXimageView.setOnDragDropped(e -> {
 
-            String transferName = e.getDragboard().getString().substring(0,2);
-            String tansferOrientation = e.getDragboard().getString().substring(2,3);
-            String tansferPassage =e.getDragboard().getString().substring(3,7);
+            String transferName = e.getDragboard().getString().substring(0, 2);
+            String tansferOrientation = e.getDragboard().getString().substring(2, 3);
+            String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation;
 
 
@@ -692,10 +699,12 @@ public class Game extends Application {
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-            int i = Integer.parseInt(e.getDragboard().getString().substring(7,8));
+
+            int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
+
         });
     }
 
