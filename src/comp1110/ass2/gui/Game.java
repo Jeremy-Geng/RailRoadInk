@@ -2,10 +2,7 @@ package comp1110.ass2.gui;
 
 
 import com.sun.javafx.css.StyleCacheEntry;
-import comp1110.ass2.A;
-import comp1110.ass2.B;
-import comp1110.ass2.Dice;
-import comp1110.ass2.RailroadInk;
+import comp1110.ass2.*;
 import javafx.application.Application;
 
 import javafx.event.EventHandler;
@@ -215,6 +212,66 @@ public class Game extends Application {
     }
 
     public void creatDiceforAround(){
+        //special Dices
+        FXimageView[] specialDiceImages  = new FXimageView[6];
+        for(int i = 0;i<specialDiceImages.length;i++){
+            specialDiceImages[i] = new FXimageView();
+        }
+        specialDiceImages[0].setImage(S0);
+        specialDiceImages[0].dice = new S(0);
+        specialDiceImages[0].name = "S0";
+        specialDiceImages[1].setImage(S1);
+        specialDiceImages[1].dice = new S(1);
+        specialDiceImages[1].name = "S1";
+        specialDiceImages[2].setImage(S2);
+        specialDiceImages[2].dice = new S(2);
+        specialDiceImages[2].name = "S2";
+        specialDiceImages[3].setImage(S3);
+        specialDiceImages[3].dice = new S(3);
+        specialDiceImages[3].name = "S3";
+        specialDiceImages[4].setImage(S4);
+        specialDiceImages[4].dice = new S(4);
+        specialDiceImages[4].name = "S4";
+        specialDiceImages[5].setImage(S5);
+        specialDiceImages[5].dice = new S(5);
+        specialDiceImages[5].name = "S5";
+        Button[] sDices = new Button[6];
+        for(int i = 0;i< sDices.length;i++) {
+            int j = i + 1;
+            if (j == 1) sDices[i] = new Button("Rotate " + j + "st Dice");
+            else if (j == 2) sDices[i] = new Button("Rotate " + j + "nd Dice");
+            else if (j == 3) sDices[i] = new Button("Rotate " + j + "rd Dice");
+            else if (j == 4) sDices[i] = new Button("Rotate " + j + "th Dice");
+            else if (j == 5) sDices[i] = new Button("Rotate " + j + "th Dice");
+            else if (j == 6) sDices[i] = new Button("Rotate " + j + "th Dice");
+            sDices[i].setLayoutX(100);
+            sDices[i].setLayoutY(90+125*i);
+            sDices[i].setEffect(new SepiaTone());
+            rotatedice(sDices[i],specialDiceImages[i]);
+            group.getChildren().addAll(sDices[i]);
+        }
+        for(int i = 0; i<specialDiceImages.length;i++){
+            specialDiceImages[i].setFitHeight(50);
+            specialDiceImages[i].setFitWidth(50);
+            specialDiceImages[i].setLayoutX(125);
+            specialDiceImages[i].setLayoutY(30+120*i);
+            group.getChildren().add(specialDiceImages[i]);
+        }
+        for (int i = 0;i<specialDiceImages.length;i++){
+            onDragDetected(specialDiceImages[i],i);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        //Normal dices
         Button button = new Button("Throw a dice");
         button.setLayoutX(800);
         button.setLayoutY(650);
@@ -635,7 +692,7 @@ public class Game extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Railroad Ink: Deep Blue Edition");
         group.getChildren().add(board);
         scene = new Scene(group,screenX,screenY);
