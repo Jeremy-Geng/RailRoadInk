@@ -19,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -29,7 +30,7 @@ public class Game extends Application {
     private static Scene scene;
     private static Group group = new Group();
     private static GridPane board= new GridPane();
-    public static int counter = 0;
+    public static int count = 0;
 
 
 
@@ -66,6 +67,7 @@ public class Game extends Application {
         int orientation = 0;
         boolean ifFlipped = false;
         boolean ifFilled = false;
+        boolean[]ifPut = new boolean[6];
 
         void setPassages(int orientation){
             dice.returnToStart();
@@ -214,7 +216,10 @@ public class Game extends Application {
     }
 
     public void creatDiceforAround() {
+        boolean[]ifPut = new boolean[6];
+
         //special Dices
+
             FXimageView[] specialDiceImages = new FXimageView[6];
             for (int i = 0; i < specialDiceImages.length; i++) {
                 specialDiceImages[i] = new FXimageView();
@@ -269,6 +274,7 @@ public class Game extends Application {
                     onDragEntered(tiles[i][j]);
                     onDragExit(tiles[i][j]);
                     onDragDroppedForSpecialDices(tiles[i][j], specialDiceImages);
+
                 }
             }
 
@@ -707,33 +713,35 @@ public class Game extends Application {
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
-
         });
+
     }
     public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
-        if (counter==3){
+        int num = 3;
+        if (count>=3){
             return;
+        }else {
+            fXimageView.setOnDragDropped(e -> {
+
+                String transferName = e.getDragboard().getString().substring(0, 2);
+                String tansferOrientation = e.getDragboard().getString().substring(2, 3);
+                String tansferPassage = e.getDragboard().getString().substring(3, 7);
+                String placementInfo = transferName + fXimageView.name + tansferOrientation;
+
+
+                boolean success = false;
+                fXimageView.setImage(e.getDragboard().getImage());
+                fXimageView.name = placementInfo;
+                fXimageView.ifFilled = true;
+                success = true;
+
+                int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
+                cleanImage[i].setImage(null);
+                e.setDropCompleted(success);
+                e.consume();
+            });
         }
-        fXimageView.setOnDragDropped(e -> {
-
-            String transferName = e.getDragboard().getString().substring(0, 2);
-            String tansferOrientation = e.getDragboard().getString().substring(2, 3);
-            String tansferPassage = e.getDragboard().getString().substring(3, 7);
-            String placementInfo = transferName + fXimageView.name + tansferOrientation;
-
-
-            boolean success = false;
-            fXimageView.setImage(e.getDragboard().getImage());
-            fXimageView.name = placementInfo;
-            fXimageView.ifFilled = true;
-            success = true;
-
-            int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
-            cleanImage[i].setImage(null);
-            e.setDropCompleted(success);
-            e.consume();
-            counter++;
-        });
+        count++;
     }
 
     @Override
