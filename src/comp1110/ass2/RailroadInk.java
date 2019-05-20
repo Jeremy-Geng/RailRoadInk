@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -764,7 +765,6 @@ public class RailroadInk {
      */
     // @author  Kathia Anyosa
     public static String generateMove(String boardString, String diceRoll) {
-        // FIXME Task 10: generate a valid move
 //        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
 //        String[] tls = tiles(diceRoll);
 //        String[] moves = possibleMoves(tls, available);
@@ -774,7 +774,55 @@ public class RailroadInk {
 //        }
 
 
+
+
+
+
         return null;
+    }
+
+    public static ArrayList<List>  validMoves (String boardString, String diceRoll){
+        ArrayList<String>  a = new ArrayList<>();
+
+        Board grid = new Board();
+        for(int i = 0; i < grid.board.length; i++){
+            for(int j = 0; j < grid.board[i].length;j++){
+                char row = (char)('A'+ i);
+                int col = j;
+                grid.board[i][j].name = Character.toString(row) + Integer.toString(col);
+            }
+        }
+
+        int numberOfTiles = boardString.length() / 5;
+        Dice[] arrayOfDice = new Dice[numberOfTiles];
+        String[] arrayOfPlacement = new String[numberOfTiles];
+
+        for (int i = 0; i < boardString.length(); i += 5) {
+            arrayOfPlacement[i / 5] = boardString.substring(i, i + 5);
+        }
+
+        for (int i = 0; i < arrayOfDice.length; i++) {
+            arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
+            arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
+        }
+
+        for(int i = 0;i<arrayOfDice.length;i++){
+            grid.board[arrayOfPlacement[i].charAt(2) - 'A'][arrayOfPlacement[i].charAt(3) - '0'].setDice(arrayOfDice[i]);
+        }
+
+        String[] diceBuilers = new String[4];
+        for(int i = 0;i<diceBuilers.length;i++){
+            diceBuilers[i]  = diceRoll.substring(i*2,i*2+2);
+        }
+
+        for(int i = 0;i < diceBuilers.length;i++){
+
+        }
+
+
+
+
+        return  null;
     }
 
     // @author  Kathia Anyosa
@@ -882,6 +930,8 @@ public class RailroadInk {
                 AllPositions.remove(takenLocations[i]);
             }
         }
+
+
         String[] availableLocations = AllPositions.toArray(new String[0]);
         return availableLocations;
     }
@@ -902,6 +952,6 @@ public class RailroadInk {
     }
 
     public static void main(String[] args) {
-        RailroadInk a = new RailroadInk();
+        validMoves("dasdas","aaaa");
     }
 }

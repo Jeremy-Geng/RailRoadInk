@@ -210,11 +210,8 @@ public class Game extends Application {
                 tiles[i][j].name = Character.toString(row) + Integer.toString(j-1);
             }
         }
-
         board.setLayoutX(240);
         board.setLayoutY(25);
-
-
     }
 
     public void creatDiceforAround(){
