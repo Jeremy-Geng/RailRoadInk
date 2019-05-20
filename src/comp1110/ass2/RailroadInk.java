@@ -811,12 +811,30 @@ public class RailroadInk {
         }
 
         String[] diceBuilers = new String[4];
+        String placeInfo = new String();
+
         for(int i = 0;i<diceBuilers.length;i++){
             diceBuilers[i]  = diceRoll.substring(i*2,i*2+2);
         }
 
         for(int i = 0;i < diceBuilers.length;i++){
+            if(diceBuilers[i].charAt(0) == 'A'){
+                for(int j = 0; j <=7 ;j++){
+                    for(int m = 0;m < grid.board.length;m++){
+                        for(int n =0; n < grid.board[m].length;n++ ){
 
+                        }
+                    }
+
+                }
+
+            }else if(diceBuilers[i].charAt(0) == 'B'){
+                for(int j = 0; j <=2 ;j++){
+
+
+                }
+
+            }
         }
 
 
