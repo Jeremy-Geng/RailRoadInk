@@ -263,6 +263,14 @@ public class Game extends Application {
         for (int i = 0;i<specialDiceImages.length;i++){
             onDragDetected(specialDiceImages[i],i);
         }
+        for(int i = 1;i<tiles.length-1;i++){
+            for(int j = 1;j<tiles[i].length-1;j++){
+                onDragOver(tiles[i][j],tiles,i,j);
+                onDragEntered(tiles[i][j]);
+                onDragExit(tiles[i][j]);
+                onDragDropped(tiles[i][j],specialDiceImages);
+            }
+        }
 
 
 
