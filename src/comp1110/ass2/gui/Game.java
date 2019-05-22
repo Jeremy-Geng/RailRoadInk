@@ -18,6 +18,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -33,8 +34,9 @@ public class Game extends Application {
     private static GridPane board= new GridPane();
     public static int count = 0;
     static Label basicScore;
+    static Label getBasicScore;
     static String score = "";
-
+    static Button Score;
 
 
 
@@ -281,6 +283,22 @@ public class Game extends Application {
 
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //Normal dices
@@ -689,24 +707,28 @@ public class Game extends Application {
             String tansferOrientation = e.getDragboard().getString().substring(2, 3);
             String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation;
-            score = score + placementInfo;
-            System.out.println(score);
+
+
             boolean success = false;
             fXimageView.setImage(e.getDragboard().getImage());
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-
-
-            System.out.println(score);
+            VBox vScore = new VBox(basicScore,getBasicScore);
+            vScore.setAlignment(Pos.BASELINE_LEFT );
+            Text sc = new Text(score + placementInfo);
+            getBasicScore.textProperty().bind(sc.textProperty());
+            basicScore = new Label("Score");
+            basicScore.setAlignment(Pos.BOTTOM_CENTER);
+            group.getChildren().add(vScore);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
         });
 
-    }
 
+    }
 
     public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
         int num = 3;
