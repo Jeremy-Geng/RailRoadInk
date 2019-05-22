@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.IntPredicate;
 
 
 public class Game extends Application {
@@ -717,13 +718,28 @@ public class Game extends Application {
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-
+            basicScore = new Label("Score");
+            basicScore.setText("score");
+            basicScore.setFont(new Font("Arial", 20));
+            basicScore.setTextFill(Color.BLACK);
+            basicScore.setLayoutX(20);
+            basicScore.setLayoutY(20);
+            group.getChildren().add(basicScore);
+            getBasicScore = new Label("getScore");
+            getBasicScore.setText(score+String.valueOf(RailroadInk.getBasicScore(placementInfo)));
+            getBasicScore.setFont(new Font("Arial", 15));
+            getBasicScore.setTextFill(Color.BLACK);
+            getBasicScore.setLayoutX(20);
+            getBasicScore.setLayoutY(45);
+            group.getChildren().add(getBasicScore);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
         });
-        group.getChildren().add(basicScore);
+    }
+    public String getScore(String A, String B){
+       return A = A+B;
 
     }
 
@@ -745,20 +761,7 @@ public class Game extends Application {
                 fXimageView.name = placementInfo;
                 fXimageView.ifFilled = true;
                 success = true;
-                basicScore = new Label("Score");
-                basicScore.setText("score");
-                basicScore.setFont(new Font("Arial", 20));
-                basicScore.setTextFill(Color.BLACK);
-                basicScore.setLayoutX(20);
-                basicScore.setLayoutY(20);
-                group.getChildren().add(basicScore);
-                getBasicScore = new Label("getScore");
-                getBasicScore.setText(score+placementInfo);
-                getBasicScore.setFont(new Font("Arial", 15));
-                getBasicScore.setTextFill(Color.BLACK);
-                getBasicScore.setLayoutX(20);
-                getBasicScore.setLayoutY(45);
-                group.getChildren().add(getBasicScore);
+
                 int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
                 cleanImage[i].setImage(null);
                 e.setDropCompleted(success);
@@ -767,6 +770,7 @@ public class Game extends Application {
         }
         count++;
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
