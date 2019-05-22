@@ -323,7 +323,8 @@ public class RailroadInk {
             }else{test = false;}
 
             for(int i = 1;i < arrayOfPlacement.length ;i++){
-//                char gateAccordingly = grid.board[]
+                char gateAccordingly = grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].getGate();
+
 
             }
 
