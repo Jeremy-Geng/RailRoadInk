@@ -9,7 +9,7 @@ public class Dice {
     public char southPassage;
     public char westPassage;
     public int faceNumber;
-    public String identityInfo;
+    public String identityInfo = "";
 
     public char backupNorthPassage;
     public char backupEastPassage;
