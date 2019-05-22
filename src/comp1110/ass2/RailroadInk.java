@@ -311,41 +311,40 @@ public class RailroadInk {
                 arrayOfDice[i] = diceCreator(arrayOfPlacement[i]);
                 arrayOfDice[i] = diceRotatorOrFliper(arrayOfDice[i], arrayOfPlacement[i].charAt(4) - '0');
             }
-            
-//            char a0 = grid.getTile(arrayOfPlacement[0].charAt(2) - 'A', arrayOfPlacement[0].charAt(3)-'0').getGate();
-//            if(a0 != '!'){
-//                if (!ifConnectedToGateCorrectly(arrayOfPlacement[0], arrayOfDice[0],a0)) test = false;
-//            }else{test = false;}
 
-              char gateFirst  = grid.board[arrayOfPlacement[0].charAt(2)-'A'][arrayOfPlacement[0].charAt(3) - '0'].getGate();
+            char gateFirst  = grid.board[arrayOfPlacement[0].charAt(2)-'A'][arrayOfPlacement[0].charAt(3) - '0'].getGate();
             if(gateFirst !='!'){
                 if(!ifConnectedToGateCorrectly(arrayOfPlacement[0],arrayOfDice[0],gateFirst)) test = false;
-            }else{test = false;}
+                grid.board[arrayOfPlacement[0].charAt(2)-'A'][arrayOfPlacement[0].charAt(3) - '0'].setDice(arrayOfDice[0]);
+                grid.board[arrayOfPlacement[0].charAt(2)-'A'][arrayOfPlacement[0].charAt(3) - '0'].ifFilled = true;
+            }else{
+                test = false;
+                return  test;}
 
             for(int i = 1;i < arrayOfPlacement.length ;i++){
+                if(grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].ifFilled) {
+                    test = false;
+                    return test;
+                }
+                boolean ifValid = false;
                 char gateAccordingly = grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].getGate();
-
-
+                if(gateAccordingly != '!'){
+                    if(!ifConnectedToGateCorrectly(arrayOfPlacement[i],arrayOfDice[i],gateAccordingly)) test = false;
+                    else{
+                        grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].setDice(arrayOfDice[i]);
+                        grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].ifFilled = true;
+                    }
+                }
+                if(test && gateAccordingly == '!' ){
+                    test = checkWhetherCanBeFilled(grid,ifValid,arrayOfPlacement[i].charAt(2)-'A',arrayOfPlacement[i].charAt(3) - '0',arrayOfPlacement[i],arrayOfDice[i]);
+                    if(test){
+                        grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].setDice(arrayOfDice[i]);
+                        grid.board[arrayOfPlacement[i].charAt(2)-'A'][arrayOfPlacement[i].charAt(3) - '0'].ifFilled = true;
+                    }
+                }
+                if(!test) break;
             }
 
-
-
-
-
-//            if(test){
-//                for(int i = 1; i < arrayOfPlacement.length; i ++){
-//                    char gate = grid.getTile(arrayOfPlacement[i].charAt(2) - 'A', arrayOfPlacement[i].charAt(3)-'0').getGate();
-//                    if(gate == '!'){
-//                        for (int j = 0; j < i; j++) {
-//                            test = areConnectedNeighbours(arrayOfPlacement[i],arrayOfPlacement[j]);
-//                            if(test) break;
-//                        }
-//                    }else{  test = ifConnectedToGateCorrectly(arrayOfPlacement[i],arrayOfDice[i],gate);
-//                            if(!test) break;
-//                    }
-//                    if(!test) break;
-//                }
-//            }
         }
         return test;
     }
@@ -355,15 +354,23 @@ public class RailroadInk {
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
             if (placementofDice.charAt(2) == 'A') {
-                if (dice.getNorthPassage() != gate) test = false;
+                if(dice.getNorthPassage() != '!'){
+                    if (dice.getNorthPassage() != gate) test = false;
+                }
             } else if (placementofDice.charAt(2) == 'B' || placementofDice.charAt(2) == 'D'|| placementofDice.charAt(2) == 'F' ) {
                 if (placementofDice.charAt(3)  == '0') {
-                    if (dice.getWestPassage() != gate) test = false;
+                    if(dice.getWestPassage() != '!'){
+                        if (dice.getWestPassage() != gate) test = false;
+                    }
                 } else if (placementofDice.charAt(3) == '6') {
-                    if (dice.getEastPassage() != gate) test = false;
+                    if(dice.getEastPassage() != '!'){
+                        if (dice.getEastPassage() != gate) test = false;
+                    }
                 }
             } else if (placementofDice.charAt(2) == 'G') {
-                if (dice.getSouthPassage() != gate) test = false;
+                if(dice.getSouthPassage() != '！'){
+                    if (dice.getSouthPassage() != gate) test = false;
+                }
             }
         return test;
     }
@@ -923,7 +930,7 @@ public class RailroadInk {
     }
 
     public static boolean checkWhetherCanBeFilled(Board grid, boolean ifValidPlaced, int m, int n,String placeInfo,Dice dice){
-//  check normal gates
+//  check normal tiles
         if(m == 0 && n == 0){
             if(grid.board[0][1].ifFilled){
                 if(areConnectedNeighbours(placeInfo,grid.board[0][1].getDice().identityInfo)){
@@ -1418,7 +1425,6 @@ public class RailroadInk {
     }
 
     public static void main(String[] args) {
-        generateMove("A3A10B2A31A1B30A0F61A4A21B1B14A4A41A4D61S2A50A5A63A2B01A1C02B0G52S0B63A0E63A2E51A4D51B0C32A5D31A5C61A0E41S5D41B1D03A5B51A4G10A0C42B0G30","A4A4A4B1");
-
+            isValidPlacementSequence("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34");
     }
 }
