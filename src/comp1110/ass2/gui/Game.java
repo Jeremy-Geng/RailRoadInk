@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,6 +32,8 @@ public class Game extends Application {
     private static Group group = new Group();
     private static GridPane board= new GridPane();
     public static int count = 0;
+    static Label basicScore;
+    static String score = "";
 
 
 
@@ -708,13 +711,19 @@ public class Game extends Application {
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-
+            addScore(score,placementInfo);
+            basicScore = new Label(Integer.toString(RailroadInk.getBasicScore(score)));
+            basicScore.setAlignment(Pos.BOTTOM_CENTER);
+            group.getChildren().add(basicScore);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
         });
 
+    }
+    public static void addScore(String A,String B){
+        A = A+B;
     }
     public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
         int num = 3;
