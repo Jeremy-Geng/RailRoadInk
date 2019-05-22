@@ -37,6 +37,7 @@ public class Game extends Application {
 
 
 
+
     private  FXimageView[][] tiles = new FXimageView[9][9];
     private  Image blacktile = new Image("assets/whitesquare.png",true);
     private  Image railWayExit = new Image("assets/RailWayExit.png",true);
@@ -280,22 +281,6 @@ public class Game extends Application {
 
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //Normal dices
@@ -704,17 +689,16 @@ public class Game extends Application {
             String tansferOrientation = e.getDragboard().getString().substring(2, 3);
             String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation;
-
-
+            score = score + placementInfo;
+            System.out.println(score);
             boolean success = false;
             fXimageView.setImage(e.getDragboard().getImage());
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-            addScore(score,placementInfo);
-            basicScore = new Label(Integer.toString(RailroadInk.getBasicScore(score)));
-            basicScore.setAlignment(Pos.BOTTOM_CENTER);
-            group.getChildren().add(basicScore);
+
+
+            System.out.println(score);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
@@ -722,9 +706,8 @@ public class Game extends Application {
         });
 
     }
-    public static void addScore(String A,String B){
-        A = A+B;
-    }
+
+
     public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
         int num = 3;
         if (count>=3){
