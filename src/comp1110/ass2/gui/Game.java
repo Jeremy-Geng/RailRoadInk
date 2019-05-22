@@ -18,11 +18,14 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.IntPredicate;
 
 
 public class Game extends Application {
@@ -36,7 +39,7 @@ public class Game extends Application {
     static Label basicScore;
     static Label getBasicScore;
     static String score = "";
-    static Button Score;
+
 
 
 
@@ -66,6 +69,7 @@ public class Game extends Application {
 
 
     public class FXimageView extends ImageView {
+
         String name = "none";
         String passages;
         char gate;
@@ -714,19 +718,28 @@ public class Game extends Application {
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
             success = true;
-            VBox vScore = new VBox(basicScore,getBasicScore);
-            vScore.setAlignment(Pos.BASELINE_LEFT );
-            Text sc = new Text(score + placementInfo);
-            getBasicScore.textProperty().bind(sc.textProperty());
             basicScore = new Label("Score");
-            basicScore.setAlignment(Pos.BOTTOM_CENTER);
-            group.getChildren().add(vScore);
+            basicScore.setText("score");
+            basicScore.setFont(new Font("Arial", 20));
+            basicScore.setTextFill(Color.BLACK);
+            basicScore.setLayoutX(20);
+            basicScore.setLayoutY(20);
+            group.getChildren().add(basicScore);
+            getBasicScore = new Label("getScore");
+            getBasicScore.setText(score+String.valueOf(RailroadInk.getBasicScore(placementInfo)));
+            getBasicScore.setFont(new Font("Arial", 15));
+            getBasicScore.setTextFill(Color.BLACK);
+            getBasicScore.setLayoutX(20);
+            getBasicScore.setLayoutY(45);
+            group.getChildren().add(getBasicScore);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
             cleanImage[i].setImage(null);
             e.setDropCompleted(success);
             e.consume();
         });
-
+    }
+    public String getScore(String A, String B){
+       return A = A+B;
 
     }
 
@@ -757,6 +770,7 @@ public class Game extends Application {
         }
         count++;
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
