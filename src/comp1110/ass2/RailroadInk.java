@@ -785,9 +785,10 @@ public class RailroadInk {
      * @return a String representing an ordered sequence of valid piece placements for the current round
      * @see RailroadInk#generateDiceRoll()
      */
-    // @author  Kathia Anyosa
+    // @author  Kathia Anyosa and Shuhao Geng
     public static String generateMove(String boardString, String diceRoll) {
         // FIXME Task 10: generate a valid move
+
         //String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
         //String[] tls = tiles(diceRoll);
         //String[] moves = possibleMoves(tls, available);
@@ -1315,8 +1316,11 @@ public class RailroadInk {
 
 
 
-    // @author  Kathia Anyosa
-    //Filter out illegal moves and return list of valid moves
+    /*
+     @author  Kathia Anyosa
+     adapted from Wayan Saryada on https://kodejava.org/how-to-split-a-string-by-a-number-of-characters/
+    */
+    //Filters out illegal moves and return list of valid moves
     public static String[] validMoves(String boardString, String[] possible){
         ArrayList<String> valid = new ArrayList<>();
         for (int i = 0; i < possible.length; i ++){

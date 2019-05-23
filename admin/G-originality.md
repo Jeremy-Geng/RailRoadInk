@@ -1,9 +1,9 @@
 We declare that the work we have submitted for Stage G of this assignment and all stages before it is entirely our own work, with the following documented exceptions:
 
-* The idea of using <...> to make the game run faster came from a discussion with <...> (noted in source code comments)
+* The idea of using <Dice>,<Endgame>,<GameRRL>,<Scoring>,<Testdrive>,<Board> to make the game run faster came from a discussion with <our groupmates> (noted in source code comments)
 
-* The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
+* The code in class <Dice>,<Endgame>,<GameRRL>,<Scoring>,<Testdrive>,<Board> is based on a solution we found when discussing the problem.
 
-* ....
+* The code in class RailroadInk is based on a solution we found when researching how to split a string in to parts of equal length (https://kodejava.org/how-to-split-a-string-by-a-number-of-characters/)
 
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: Siqi Gu(u6359309), Shuhao Geng(u6725016), and Kathia Anyosa (u6414938)
