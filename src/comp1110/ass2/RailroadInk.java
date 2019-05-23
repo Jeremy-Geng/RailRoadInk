@@ -769,9 +769,8 @@ public class RailroadInk {
         String[] tls = tiles(diceRoll);
         String[] moves = possibleMoves(tls, available);
         String[] valid = validMoves(boardString, moves);
-        for (int i = 0; i+1 < valid.length; i++){
-            String generatedMoves = valid[i]+valid[i+1];
-        }
+        //Play first move then remove tile from tles and remove position from available, and get new valid moves
+        //play next move and repeat until all tiles are played, or there are no more valid moves
         return null;
     }
 
@@ -794,41 +793,47 @@ public class RailroadInk {
     public static String[] possibleMoves(String[] tiles, String[] availableLocations){
         ArrayList<String> moves = new ArrayList<>();
         for (int i = 0; i < availableLocations.length; i ++){
-            moves.add(tiles[0]+availableLocations[i]+"0");
-            moves.add(tiles[0]+availableLocations[i]+"1");
-            moves.add(tiles[0]+availableLocations[i]+"2");
-            moves.add(tiles[0]+availableLocations[i]+"3");
-            moves.add(tiles[0]+availableLocations[i]+"4");
-            moves.add(tiles[0]+availableLocations[i]+"5");
-            moves.add(tiles[0]+availableLocations[i]+"6");
-            moves.add(tiles[0]+availableLocations[i]+"7");
+//            moves.add(tiles[0]+availableLocations[i]+"0");
+//            moves.add(tiles[0]+availableLocations[i]+"1");
+//            moves.add(tiles[0]+availableLocations[i]+"2");
+//            moves.add(tiles[0]+availableLocations[i]+"3");
+//            moves.add(tiles[0]+availableLocations[i]+"4");
+//            moves.add(tiles[0]+availableLocations[i]+"5");
+//            moves.add(tiles[0]+availableLocations[i]+"6");
+//            moves.add(tiles[0]+availableLocations[i]+"7");
+//
+//            moves.add(tiles[1]+availableLocations[i]+"0");
+//            moves.add(tiles[1]+availableLocations[i]+"1");
+//            moves.add(tiles[1]+availableLocations[i]+"2");
+//            moves.add(tiles[1]+availableLocations[i]+"3");
+//            moves.add(tiles[1]+availableLocations[i]+"4");
+//            moves.add(tiles[1]+availableLocations[i]+"5");
+//            moves.add(tiles[1]+availableLocations[i]+"6");
+//            moves.add(tiles[1]+availableLocations[i]+"7");
 
-            moves.add(tiles[1]+availableLocations[i]+"0");
-            moves.add(tiles[1]+availableLocations[i]+"1");
-            moves.add(tiles[1]+availableLocations[i]+"2");
-            moves.add(tiles[1]+availableLocations[i]+"3");
-            moves.add(tiles[1]+availableLocations[i]+"4");
-            moves.add(tiles[1]+availableLocations[i]+"5");
-            moves.add(tiles[1]+availableLocations[i]+"6");
-            moves.add(tiles[1]+availableLocations[i]+"7");
-
-            moves.add(tiles[2]+availableLocations[i]+"0");
-            moves.add(tiles[2]+availableLocations[i]+"1");
-            moves.add(tiles[2]+availableLocations[i]+"2");
-            moves.add(tiles[2]+availableLocations[i]+"3");
-            moves.add(tiles[2]+availableLocations[i]+"4");
-            moves.add(tiles[2]+availableLocations[i]+"5");
-            moves.add(tiles[2]+availableLocations[i]+"6");
-            moves.add(tiles[2]+availableLocations[i]+"7");
-
-            moves.add(tiles[3]+availableLocations[i]+"0");
-            moves.add(tiles[3]+availableLocations[i]+"1");
-            moves.add(tiles[3]+availableLocations[i]+"2");
-            moves.add(tiles[3]+availableLocations[i]+"3");
-            moves.add(tiles[3]+availableLocations[i]+"4");
-            moves.add(tiles[3]+availableLocations[i]+"5");
-            moves.add(tiles[3]+availableLocations[i]+"6");
-            moves.add(tiles[3]+availableLocations[i]+"7");
+            for (int tile = 0; tile < 4; tile++){
+                for (int rotation = 0; rotation < 8; rotation ++){
+                    moves.add(tiles[tile]+availableLocations[i]+Integer.toString(rotation));
+                }
+            }
+//
+//            moves.add(tiles[2]+availableLocations[i]+"0");
+//            moves.add(tiles[2]+availableLocations[i]+"1");
+//            moves.add(tiles[2]+availableLocations[i]+"2");
+//            moves.add(tiles[2]+availableLocations[i]+"3");
+//            moves.add(tiles[2]+availableLocations[i]+"4");
+//            moves.add(tiles[2]+availableLocations[i]+"5");
+//            moves.add(tiles[2]+availableLocations[i]+"6");
+//            moves.add(tiles[2]+availableLocations[i]+"7");
+//
+//            moves.add(tiles[3]+availableLocations[i]+"0");
+//            moves.add(tiles[3]+availableLocations[i]+"1");
+//            moves.add(tiles[3]+availableLocations[i]+"2");
+//            moves.add(tiles[3]+availableLocations[i]+"3");
+//            moves.add(tiles[3]+availableLocations[i]+"4");
+//            moves.add(tiles[3]+availableLocations[i]+"5");
+//            moves.add(tiles[3]+availableLocations[i]+"6");
+//            moves.add(tiles[3]+availableLocations[i]+"7");
         }
         String[] possibleMoves = moves.toArray(new String[0]);
         return possibleMoves;
