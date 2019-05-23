@@ -350,7 +350,7 @@ public class RailroadInk {
     }
 
     //  @author Shuhao Geng
-    //  THe method is for checking whether one tile is connected to gate correctly.
+    //  The method is for checking whether one tile is connected to gate correctly.
     public static boolean ifConnectedToGateCorrectly(String placementofDice,Dice dice,char gate){
         boolean test = true;
             if (placementofDice.charAt(2) == 'A') {
