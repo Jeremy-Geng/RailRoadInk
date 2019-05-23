@@ -1,5 +1,6 @@
 package comp1110.ass2;
 // this class is to design three different kinds of dice.
+//  @author Shuhao Geng
 public class Dice {
     public static final double MAX_DICE_WIDTH = 3;
     public static final char INVALID_SPACE = '!';

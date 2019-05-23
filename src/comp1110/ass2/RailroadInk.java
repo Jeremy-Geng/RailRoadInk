@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
-import javax.print.DocFlavor;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
@@ -8,57 +10,14 @@ import java.util.Random;
 
 public class RailroadInk {
     private Dice a;
+    private StringProperty score;
 
-    /**
-     * Determine whether a tile placement string is well-formed:
-     * - it consists of exactly 5 characters;
-     * - the first character represents a die A or B, or a special tile S
-     * - the second character indicates which tile or face of the die (0-5 for die A and special tiles, or 0-2 for die B)
-     * - the third character represents the placement row A-G
-     * - the fourth character represents the placement column 0-6
-     * - the fifth character represents the orientation 0-7
-     *
-     * @param tilePlacementString a candidate tile placement string
-     * @return true if the tile placement is well formed
-     */
+    public RailroadInk(){
+        score = new SimpleStringProperty(this,"score");
+    }
 
-//   @author Siqi Gu
+//   @author Siqi Gu & Shuhao Geng
     public static boolean isTilePlacementWellFormed(String tilePlacementString) {
- /*      int ascii = tilePlacementString.charAt(2);
-        char[]chars = tilePlacementString.toCharArray();
-
-        if (tilePlacementString.length()!=5){
-            return false;
-        }
-        if ((chars[0] != 'A')
-                && (chars[0]!= 'S')
-                && (chars[0] != 'B')){
-            return false;
-        }
-        if (chars[0]=='A'){
-            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-                return false;
-        }
-        if (chars[0]=='S'){
-            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>5||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-                return false;
-        }
-        if (chars[0]=='B'){
-            if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))>2||Integer.parseInt(String.valueOf(tilePlacementString.charAt(1)))<0)
-                return false;
-        }
-        if (ascii<65){
-            return false;
-        }
-        if (ascii>71){
-            return false;
-        }
-        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))>6&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(3)))<0){
-            return false;
-        }
-        if (Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))>7&&Integer.parseInt(String.valueOf(tilePlacementString.charAt(4)))<0){
-            return false;*/
-
         boolean test = true;
 
 //        According to the documentation, there should be six conditions to test the tile Placement String
@@ -89,46 +48,11 @@ public class RailroadInk {
     }
 
 
-    /**
-     * Determine whether a board string is well-formed:
-     * - it consists of exactly N five-character tile placements (where N = 1 .. 31);
-     * - each piece placement is well-formed
-     * - no more than three special tiles are included
-     *
-     * @param boardString a board string describing the placement of one or more pieces
-     * @return true if the board string is well-formed
-     */
-
-    //   @author Siqi Gu
+    //   @author Siqi Gu & Shuhao Geng
     public static boolean isBoardStringWellFormed(String boardString) {
-        /*if (boardString==null){
-            return false;        }
-        Pattern pattern = Pattern.compile("S");
-        Matcher matcher = pattern.matcher(boardString);
-        int cont = 0;
-        while(matcher.find()){
-            cont++;
-            {if (cont>3){
-                return false;
-            }
-            }
-        }
-        int length = boardString.length();
-        if (length==0){
-            return false;
-        }
-        if (length%5!=0) {
-            return false;
-        }
-        if (length>155){
-            return false;
-        }
-        return true;*/
-
         boolean test = true;
 
 //      To check whether Board String is an effective and meaningful one
-
         if(boardString == null)  return false;
         if(boardString.equals(""))   test = false;
 
@@ -136,14 +60,11 @@ public class RailroadInk {
 
 //        Condition 1
         if(boardString.length() % 5 != 0 || boardString.length() > 155) test = false;
-
         if(test) {
 //        Condition 2
             int numberOfTiles = boardString.length() / 5;
             String[] arrayOfTiles = new String[numberOfTiles];
-
 //        To spilt Board String into tile Placement string
-
             for (int i = 0; i < boardString.length(); i += 5) {
                 arrayOfTiles[i / 5] = boardString.substring(i, i + 5);
             }
@@ -160,19 +81,6 @@ public class RailroadInk {
         }
         return test;
     }
-
-
-    /**
-     * Determine whether the provided placements are neighbours connected by at least one validly connecting edge.
-     * For example,
-     * - areConnectedNeighbours("A3C10", "A3C23") would return true as these tiles are connected by a highway edge;
-     * - areConnectedNeighbours("A3C23", "B1B20") would return false as these neighbouring tiles are disconnected;
-     * - areConnectedNeighbours("A0B30", "A3B23") would return false as these neighbouring tiles have an
-     * invalid connection between highway and railway; and
-     * areConnectedNeighbours("A0B30", "A3C23") would return false as these tiles are not neighbours.
-     *
-     * @return true if the placements are connected neighbours
-     */
 
 //  @author Shuhao Geng
     public static boolean areConnectedNeighbours(String tilePlacementStringA, String tilePlacementStringB) {
@@ -274,24 +182,6 @@ public class RailroadInk {
         return test;
     }
 
-
-
-    /**
-     * Given a well-formed board string representing an ordered list of placements,
-     * determine whether the board string is valid.
-     * A board string is valid if each tile placement is legal with respect to all previous tile
-     * placements in the string, according to the rules for legal placements:
-     * - A tile must be placed such that at least one edge connects to either an exit or a pre-existing route.
-     *   Such a connection is called a valid connection.
-     * - Tiles may not be placed such that a highway edge connects to a railway edge;
-     *   this is referred to as an invalid connection.
-     *   Highways and railways may only join at station tiles.
-     * - A tile may have one or more edges touching a blank edge of another tile;
- v     *
-     * @param boardString a board string representing some placement sequence
-     * @return true if placement sequence is valid
-     */
-
     //  @author Shuhao Geng
     public static boolean isValidPlacementSequence(String boardString) {
         boolean test = true;
@@ -375,17 +265,6 @@ public class RailroadInk {
         return test;
     }
 
-    /**
-     * Generate a random dice roll as a string of eight characters.
-     * Dice A should be rolled three times, dice B should be rolled once.
-     * Die A has faces numbered 0-5.
-     * Die B has faces numbered 0-2.
-     * Each die roll is composed of a character 'A' or 'B' representing the dice,
-     * followed by a digit character representing the face.
-     *
-     * @return a String representing the die roll e.g. A0A4A3B2
-     */
-
     //  @author Siqi Gu
     public static String generateDiceRoll() {
         String randomdiceroll = "";
@@ -401,19 +280,6 @@ public class RailroadInk {
         }
         return randomdiceroll;
     }
-
-    /**
-     * Given the current state of a game board, output an integer representing the sum of all the following factors
-     * that contribute to the player's final score.
-     * <p>
-     * * Number of exits mapped
-     * * Number of centre tiles used
-     * * Number of dead ends in the network
-     *
-     * @param boardString a board string representing a completed game
-     * @return integer (positive or negative) for score *not* considering longest rail/highway
-     */
-
     //  @author Shuhao Geng
     public static int getBasicScore(String boardString) {
         int basicScore = 0;
@@ -489,8 +355,6 @@ public class RailroadInk {
                     pointsPartOne = pointsPartOne + pointsAwardedforGatesConnected(numberofGatesConnect);
                 }
             }
-
-
             int pointsPartTwo = 0;
             for(int i = 0;i < grid.board.length;i++){
                 for(int j = 0;j < grid.board[i].length;j++){
@@ -737,7 +601,7 @@ public class RailroadInk {
         }
         return effectiveNeighbours;
      }
-
+    //  @author Shuhao Geng
      public static String decomposeOverpass(Dice a, Dice overpass ){
            String direction = "";
            if(a.identityInfo.charAt(2) == overpass.identityInfo.charAt(2)){
@@ -747,7 +611,7 @@ public class RailroadInk {
            }
            return  direction;
      }
-
+    //  @author Shuhao Geng
      public static int pointsAwardedforGatesConnected(int numberofGatesConnect){
         int points = 0;
         if(numberofGatesConnect == 2){
@@ -776,34 +640,8 @@ public class RailroadInk {
 
         return points;
      }
-
-    /**
-     * Given a valid boardString and a dice roll for the round,
-     * return a String representing an ordered sequence of valid piece placements for the round.
-     * @param boardString a board string representing the current state of the game as at the start of the round
-     * @param diceRoll a String representing a dice roll for the round
-     * @return a String representing an ordered sequence of valid piece placements for the current round
-     * @see RailroadInk#generateDiceRoll()
-     */
     // @author  Kathia Anyosa and Shuhao Geng
     public static String generateMove(String boardString, String diceRoll) {
-        // FIXME Task 10: generate a valid move
-
-        //String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
-        //String[] tls = tiles(diceRoll);
-        //String[] moves = possibleMoves(tls, available);
-        //String[] valid = validMoves(boardString, moves);
-        //Play first move then remove tile from tles and remove position from available, and get new valid moves
-        //play next move and repeat until all tiles are played, or there are no more valid moves
-        //return null;
-//        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
-//        String[] tls = tiles(diceRoll);
-//        String[] moves = possibleMoves(tls, available);
-//        String[] valid = validMoves(boardString, moves);
-//        for (int i = 0; i+1 < valid.length; i++){
-//            String generatedMoves = valid[i]+valid[i+1];
-//        }
-
         Board grid = new Board();
         for(int i = 0; i < grid.board.length; i++){
             for(int j = 0; j < grid.board[i].length;j++){
@@ -841,12 +679,11 @@ public class RailroadInk {
 
         return os;
     }
-
+    //  check valid moves or not
+    //  @author Shuhao Geng
     public static ArrayList<String> validMoves (Board grid,String boardString, String diceRoll,ArrayList<String> storage){
         if(diceRoll.length() == 0) return  null;
-
         ArrayList<Tile> blackTiles = new ArrayList<>();
-
         for(int i=0;i < grid.board.length;i++){
             for(int j = 0 ; j< grid.board[i].length;j++){
                 if(!grid.board[i][j].ifFilled){
@@ -857,12 +694,9 @@ public class RailroadInk {
         String[] diceBuilers = new String[diceRoll.length()/2];
         String placeInfo = new String();
 
-
         for(int i = 0;i<diceBuilers.length;i++){
             diceBuilers[i]  = diceRoll.substring(i*2,i*2+2);
         }
-
-
         for(int i = 0;i < diceBuilers.length;i++){
             boolean ifValidPlaced = false;
             if(diceBuilers[i].charAt(0) == 'A'){
@@ -892,7 +726,6 @@ public class RailroadInk {
                                     validMoves(grid,boardString,newDiceroll,storage);
                                     break;
                                 }
-
                         if(ifValidPlaced) break;
                     }
                     if(ifValidPlaced) break;
@@ -920,11 +753,8 @@ public class RailroadInk {
                                         }
                                     }
                                       validMoves(grid,boardString,newDiceroll,storage);
-
                                     break;
                                 }
-
-
                         if(ifValidPlaced) break;
                     }
                    if(ifValidPlaced) break;
@@ -932,11 +762,10 @@ public class RailroadInk {
             }
             if(ifValidPlaced) break;
         }
-
-//        System.out.println(orderedSequence);
         return storage;
     }
-
+    //check the dice can or cannot fill on board
+    //  @author Shuhao Geng & Siqi Gu
     public static boolean checkWhetherCanBeFilled(Board grid, boolean ifValidPlaced, int m, int n,String placeInfo,Dice dice){
 //  check gates
        if(m == 0 && (n == 1 || n == 3 || n == 5)){
@@ -1311,11 +1140,6 @@ public class RailroadInk {
         return ifValidPlaced;
     }
 
-
-
-
-
-
     /*
      @author  Kathia Anyosa
      adapted from Wayan Saryada on https://kodejava.org/how-to-split-a-string-by-a-number-of-characters/
@@ -1338,47 +1162,11 @@ public class RailroadInk {
     public static String[] possibleMoves(String[] tiles, String[] availableLocations){
         ArrayList<String> moves = new ArrayList<>();
         for (int i = 0; i < availableLocations.length; i ++){
-//            moves.add(tiles[0]+availableLocations[i]+"0");
-//            moves.add(tiles[0]+availableLocations[i]+"1");
-//            moves.add(tiles[0]+availableLocations[i]+"2");
-//            moves.add(tiles[0]+availableLocations[i]+"3");
-//            moves.add(tiles[0]+availableLocations[i]+"4");
-//            moves.add(tiles[0]+availableLocations[i]+"5");
-//            moves.add(tiles[0]+availableLocations[i]+"6");
-//            moves.add(tiles[0]+availableLocations[i]+"7");
-//
-//            moves.add(tiles[1]+availableLocations[i]+"0");
-//            moves.add(tiles[1]+availableLocations[i]+"1");
-//            moves.add(tiles[1]+availableLocations[i]+"2");
-//            moves.add(tiles[1]+availableLocations[i]+"3");
-//            moves.add(tiles[1]+availableLocations[i]+"4");
-//            moves.add(tiles[1]+availableLocations[i]+"5");
-//            moves.add(tiles[1]+availableLocations[i]+"6");
-//            moves.add(tiles[1]+availableLocations[i]+"7");
-
             for (int tile = 0; tile < 4; tile++){
                 for (int rotation = 0; rotation < 8; rotation ++){
                     moves.add(tiles[tile]+availableLocations[i]+Integer.toString(rotation));
                 }
             }
-//
-//            moves.add(tiles[2]+availableLocations[i]+"0");
-//            moves.add(tiles[2]+availableLocations[i]+"1");
-//            moves.add(tiles[2]+availableLocations[i]+"2");
-//            moves.add(tiles[2]+availableLocations[i]+"3");
-//            moves.add(tiles[2]+availableLocations[i]+"4");
-//            moves.add(tiles[2]+availableLocations[i]+"5");
-//            moves.add(tiles[2]+availableLocations[i]+"6");
-//            moves.add(tiles[2]+availableLocations[i]+"7");
-//
-//            moves.add(tiles[3]+availableLocations[i]+"0");
-//            moves.add(tiles[3]+availableLocations[i]+"1");
-//            moves.add(tiles[3]+availableLocations[i]+"2");
-//            moves.add(tiles[3]+availableLocations[i]+"3");
-//            moves.add(tiles[3]+availableLocations[i]+"4");
-//            moves.add(tiles[3]+availableLocations[i]+"5");
-//            moves.add(tiles[3]+availableLocations[i]+"6");
-//            moves.add(tiles[3]+availableLocations[i]+"7");
         }
         String[] possibleMoves = moves.toArray(new String[0]);
         return possibleMoves;
@@ -1436,16 +1224,6 @@ public class RailroadInk {
         return availableLocations;
     }
 
-    /**
-     * Given the current state of a game board, output an integer representing the sum of all the factors contributing
-     * to `getBasicScore`, as well as those attributed to:
-     * <p>
-     * * Longest railroad
-     * * Longest highway
-     *
-     * @param boardString a board string representing a completed game
-     * @return integer (positive or negative) for final score (not counting expansion packs)
-     */
     public static int getAdvancedScore(String boardString) {
         // FIXME Task 12: compute the total score including bonus points
         return -1;

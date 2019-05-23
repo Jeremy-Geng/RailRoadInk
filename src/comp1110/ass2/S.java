@@ -1,5 +1,5 @@
 package comp1110.ass2;
-
+//  @author Shuhao Geng
 public class S extends Dice{
     public S(int s){
         faceNumber = s;

@@ -31,6 +31,7 @@ import java.util.function.IntPredicate;
 
 public class Game extends Application {
     //Game board on screen
+   /* @author Shuhao Geng & Siqi Gu*/
     private final int screenX = 1024;
     private final int screenY = 768;
     private static Scene scene;
@@ -86,7 +87,7 @@ public class Game extends Application {
     static Image B1 = new Image("assets/B1.png",true);
     static Image B2 = new Image("assets/B2.png",true);
 
-
+    /* @author Shuhao Geng*/
     public class FXimageView extends ImageView {
 
         String name = "none";
@@ -124,7 +125,8 @@ public class Game extends Application {
 
     }
 
-
+    //  the whiteboard
+    //  @author Shuhao Geng
     public  void fillInBoard(){
         for(int i = 0;i<tiles.length;i++){
             for(int j = 0; j<tiles.length;j++){
@@ -356,6 +358,7 @@ public class Game extends Application {
 
     }
 
+    //  @author Shuhao Geng
     public void creatDiceforAround() {
         boolean[]ifPut = new boolean[6];
 
@@ -573,6 +576,8 @@ public class Game extends Application {
 
     }
 
+    //  For  place tiles
+    //  @author Shuhao Geng
     public static void makePlacement(String placement){
         int numberOfTiles = placement.length() / 5;
         String[] arrayOfTiles = new String[numberOfTiles];
@@ -724,6 +729,8 @@ public class Game extends Application {
         }
         }
 
+        // change orientaion of dices
+        //  @author Shuhao Geng
     public static void rotatedice(Button rb,FXimageView fiv){
         rb.setOnAction(e->{
             fiv.setRotate(fiv.getRotate() + 90);
@@ -731,11 +738,15 @@ public class Game extends Application {
         });
     }
 
+
+        //this method is using for clear group
+        //  @author Shuhao Geng
     public static void clearGroup(){
         group.getChildren().clear();
     }
 
-
+        //Detect drag
+        //  @author Shuhao Geng
     public static void onDragDetected(FXimageView fxImageView,int cleanNum){
         fxImageView.setOnDragDetected(e ->{
             Dragboard db = fxImageView.startDragAndDrop(TransferMode.ANY);
@@ -758,7 +769,8 @@ public class Game extends Application {
             e.consume();
         });
     }
-
+        //for dices are dragged to whiteboard
+        //  @author Shuhao Geng & Siqi Gu
     public static void onDragOver(FXimageView fXimageView,FXimageView[][] board,int row,int col) {
 
         fXimageView.setOnDragOver(e -> {
@@ -1014,20 +1026,23 @@ public class Game extends Application {
         });
 
     }
-
+        //drag effect
+        //  @author Shuhao Geng & Siqi Gu
     public static void onDragEntered(FXimageView fXimageView){
         fXimageView.setOnDragEntered(e ->{
             fXimageView.setEffect(new GaussianBlur());
             e.consume();
         });
     }
-
+        //drag effect2
+        //  @author Shuhao Geng
     public static void onDragExit(FXimageView fXimageView){
         fXimageView.setOnDragExited(e ->{
             fXimageView.setEffect(new Glow());
         });
     }
-
+        //drog dices
+        //  @author Shuhao Geng & Siqi Gu
     public static void onDragDropped(FXimageView fXimageView,FXimageView[] cleanImage,FXimageView[] cleanSpecialImage) {
         fXimageView.setOnDragDropped(e -> {
 
