@@ -506,9 +506,6 @@ public class Game extends Application {
 
             }
 
-            for(int i = 0;i < diceImages.length;i++){
-                onDragDetected(diceImages[i],i);
-            }
 
             for(int i = 1;i<tiles.length-1;i++){
                 for(int j = 1;j<tiles[i].length-1;j++){
@@ -517,6 +514,10 @@ public class Game extends Application {
                     onDragExit(tiles[i][j]);
                     onDragDropped(tiles[i][j],diceImages,specialDiceImages);
                 }
+            }
+
+            for(int i = 0;i < diceImages.length;i++){
+                onDragDetected(diceImages[i],i);
             }
 
 
@@ -779,7 +780,6 @@ public class Game extends Application {
             String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation + tansferPassage;
             String check = score + placementInfo.substring(0,5);
-            System.out.println(check);
 
             if (!fXimageView.name.equals("none") && !fXimageView.ifFilled) {
 //              gates
