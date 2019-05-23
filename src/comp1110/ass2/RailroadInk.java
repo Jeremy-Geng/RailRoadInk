@@ -787,16 +787,14 @@ public class RailroadInk {
      */
     // @author  Kathia Anyosa
     public static String generateMove(String boardString, String diceRoll) {
-<<<<<<< HEAD
         // FIXME Task 10: generate a valid move
-        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
-        String[] tls = tiles(diceRoll);
-        String[] moves = possibleMoves(tls, available);
-        String[] valid = validMoves(boardString, moves);
+        //String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
+        //String[] tls = tiles(diceRoll);
+        //String[] moves = possibleMoves(tls, available);
+        //String[] valid = validMoves(boardString, moves);
         //Play first move then remove tile from tles and remove position from available, and get new valid moves
         //play next move and repeat until all tiles are played, or there are no more valid moves
-        return null;
-=======
+        //return null;
 //        String[] available = availableLocations(tileLocations(splitIntoIndividualPlacementStrings(boardString)));
 //        String[] tls = tiles(diceRoll);
 //        String[] moves = possibleMoves(tls, available);
@@ -1310,7 +1308,6 @@ public class RailroadInk {
 
         }
         return ifValidPlaced;
->>>>>>> 3624928942980b3f28a79ac4a63f0b716d4ff056
     }
 
 
