@@ -317,8 +317,8 @@ public class Viewer extends Application {
         if (orientation == 1) imageView.setRotate(90);
         else if (orientation == 2) imageView.setRotate(180);
         else if (orientation == 3) imageView.setRotate(270);
-        imageView.setFitHeight(80);
-        imageView.setFitWidth(80);
+        imageView.setFitHeight(60);
+        imageView.setFitWidth(60);
         grid.add(imageView,column,row);
     }
 

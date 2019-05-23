@@ -19,6 +19,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,37 +36,55 @@ public class Game extends Application {
     private static Scene scene;
     private static Group group = new Group();
     private static GridPane board= new GridPane();
+    private static GridPane computerBoard= new GridPane();
+    private static Text playerTitle = new Text("Your Grid");
+    private static Text opponentTitle = new Text("Opponent Grid");
+
     public static int count = 0;
-    static Label basicScore;
-    static Label getBasicScore;
-    static String score = "";
+
+    private static Text basicScore = new Text("Your BasicScore:");
+    private static Text getBasicScore = new Text("0");
+    private static Text opponentBasicScore = new Text("Opponent Basicscore:");
+    private static Text opponentGetBasicScore = new Text("0");
+    private static HBox playerScore;
+    private static HBox opponentScore;
+    private static String score = "";
+    private static String computerScore = "";
+    private static int playerFinalScore = 0;
+    private static int opponentFinalSocre = 0;
+
+    private static int round = 0;
+    private static Text showRound = new Text();
 
 
-
+    private static String  boardString = "";
+    private static int num  = 0;
+    private static ArrayList<String> diceRollStorage = new ArrayList<>();
 
     private  FXimageView[][] tiles = new FXimageView[9][9];
+    private  ImageView[][] computerTiles = new ImageView[9][9];
     private  Image blacktile = new Image("assets/whitesquare.png",true);
     private  Image railWayExit = new Image("assets/RailWayExit.png",true);
     private  Image highWayExit = new Image("assets/HighWayExit.png",true);
 
-    Image A0 = new Image("assets/A0.png",true);
-    Image A1 = new Image("assets/A1.png",true);
-    Image A2 = new Image("assets/A2.png",true);
-    Image A3 = new Image("assets/A3.png",true);
-    Image A4 = new Image("assets/A4.png",true);
-    Image A5 = new Image("assets/A5.png",true);
+    static Image A0 = new Image("assets/A0.png",true);
+    static Image A1 = new Image("assets/A1.png",true);
+    static Image A2 = new Image("assets/A2.png",true);
+    static Image A3 = new Image("assets/A3.png",true);
+    static Image A4 = new Image("assets/A4.png",true);
+    static Image A5 = new Image("assets/A5.png",true);
 
 
-    Image S0 = new Image("assets/S0.png",true);
-    Image S1 = new Image("assets/S1.png",true);
-    Image S2 = new Image("assets/S2.png",true);
-    Image S3 = new Image("assets/S3.png",true);
-    Image S4 = new Image("assets/S4.png",true);
-    Image S5 = new Image("assets/S5.png",true);
+    static Image S0 = new Image("assets/S0.png",true);
+    static Image S1 = new Image("assets/S1.png",true);
+    static Image S2 = new Image("assets/S2.png",true);
+    static Image S3 = new Image("assets/S3.png",true);
+    static Image S4 = new Image("assets/S4.png",true);
+    static Image S5 = new Image("assets/S5.png",true);
 
-    Image B0 = new Image("assets/B0.png",true);
-    Image B1 = new Image("assets/B1.png",true);
-    Image B2 = new Image("assets/B2.png",true);
+    static Image B0 = new Image("assets/B0.png",true);
+    static Image B1 = new Image("assets/B1.png",true);
+    static Image B2 = new Image("assets/B2.png",true);
 
 
     public class FXimageView extends ImageView {
@@ -110,6 +129,87 @@ public class Game extends Application {
         for(int i = 0;i<tiles.length;i++){
             for(int j = 0; j<tiles.length;j++){
                 tiles[i][j] = new FXimageView();
+            }
+        }
+
+        for(int i = 0;i<computerTiles.length;i++){
+            for(int j = 0;j<computerTiles.length;j++){
+                computerTiles[i][j] = new ImageView();
+                computerTiles[i][j].setFitWidth(60);
+                computerTiles[i][j].setFitHeight(60);
+            }
+        }
+
+//     up gates
+        for(int i = 0;i < 1;i++){
+            for(int j = 2; j<computerTiles[0].length;j++ ){
+                if(j == 2 || j == 6){
+                    computerTiles[i][j].setImage(highWayExit);
+                    computerBoard.add(computerTiles[i][j],j,i);
+
+                }else if(j == 4){
+                    computerTiles[i][j].setImage(railWayExit);
+                    computerBoard.add(computerTiles[i][j],j,i);
+                }
+            }
+        }
+
+//        left gates
+        for(int j = 0; j<1;j++){
+            for(int i = 2; i < tiles.length;i++){
+                if(i == 2 || i ==6){
+                    computerTiles[i][j].setImage(railWayExit);
+                    computerTiles[i][j].setRotate(-90);
+                    computerBoard.add(computerTiles[i][j],j,i);
+
+                }else if(i == 4){
+                    computerTiles[i][j].setImage(highWayExit);
+                    computerTiles[i][j].setRotate(-90);
+                    computerBoard.add(computerTiles[i][j],j,i);
+                }
+            }
+        }
+
+
+//      down gates
+        for(int i = 8;i < tiles.length;i++){
+            for(int j = 2; j<tiles[0].length;j++ ){
+                if(j == 2 || j == 6){
+                    computerTiles[i][j].setImage(highWayExit);
+                    computerTiles[i][j].setRotate(180);
+                    computerBoard.add(computerTiles[i][j],j,i);
+
+                }else if(j == 4){
+                    computerTiles[i][j].setImage(railWayExit);
+                    computerTiles[i][j].setRotate(180);
+                    computerBoard.add(computerTiles[i][j],j,i);
+                }
+            }
+        }
+
+//        right gates
+        for(int j = 8; j<tiles.length;j++){
+            for(int i = 2; i < tiles.length;i++){
+                if(i == 2 || i ==6){
+                    computerTiles[i][j].setImage(railWayExit);
+                    computerTiles[i][j].setRotate(90);
+                    computerBoard.add(computerTiles[i][j],j,i);
+
+                }else if(i == 4){
+                    computerTiles[i][j].setImage(highWayExit);
+                    computerTiles[i][j].setRotate(90);
+                    computerBoard.add(computerTiles[i][j],j,i);
+                }
+
+            }
+        }
+
+        for(int i = 1;i<computerTiles.length-1;i++){
+            for(int j = 1;j<computerTiles[i].length-1;j++){
+                computerTiles[i][j].setImage(blacktile);
+                computerTiles[i][j].setFitWidth(60);
+                computerTiles[i][j].setFitHeight(60);
+                computerBoard.add(computerTiles[i][j],j,i);
             }
         }
 
@@ -222,7 +322,38 @@ public class Game extends Application {
             }
         }
         board.setLayoutX(240);
-        board.setLayoutY(25);
+        board.setLayoutY(75);
+        computerBoard.setLayoutX(860);
+        computerBoard.setLayoutY(75);
+        playerTitle.setLayoutX(450);
+        playerTitle.setLayoutY(50);
+        playerTitle.setFont(Font.font(null,FontWeight.BOLD,25));
+        opponentTitle.setLayoutX(1050);
+        opponentTitle.setLayoutY(50);
+        opponentTitle.setFont(Font.font(null,FontWeight.BOLD,25));
+
+
+        playerScore = new HBox();
+        playerScore.getChildren().addAll(basicScore,getBasicScore);
+        basicScore.setFont(Font.font("Verdana",20));
+        getBasicScore.setFont(Font.font("Verdana",20));
+        playerScore.setLayoutX(420);
+        playerScore.setLayoutY(625);
+        playerScore.setSpacing(10);
+        opponentScore = new HBox();
+        opponentScore.getChildren().addAll(opponentBasicScore,opponentGetBasicScore);
+        opponentBasicScore.setFont(Font.font("Verdana",20));
+        opponentGetBasicScore.setFont(Font.font("Verdana",20));
+        opponentScore.setSpacing(10);
+        opponentScore.setLayoutX(1020);
+        opponentScore.setLayoutY(625);
+
+        showRound.setText("Round: " + round );
+        showRound.setLayoutX(1050);
+        showRound.setLayoutY(750);
+        showRound.setFont(Font.font("Verdana",FontPosture.ITALIC,35));
+
+
     }
 
     public void creatDiceforAround() {
@@ -253,20 +384,22 @@ public class Game extends Application {
             specialDiceImages[5].dice = new S(5);
             specialDiceImages[5].name = "S5";
             Button[] sDices = new Button[6];
+
             for (int i = 0; i < sDices.length; i++) {
                 int j = i + 1;
-                if (j == 1) sDices[i] = new Button("Rotate " + j + "st Dice");
-                else if (j == 2) sDices[i] = new Button("Rotate " + j + "nd Dice");
-                else if (j == 3) sDices[i] = new Button("Rotate " + j + "rd Dice");
-                else if (j == 4) sDices[i] = new Button("Rotate " + j + "th Dice");
-                else if (j == 5) sDices[i] = new Button("Rotate " + j + "th Dice");
-                else if (j == 6) sDices[i] = new Button("Rotate " + j + "th Dice");
+                if (j == 1) sDices[i] = new Button("Rotate " + j + "st S Dice");
+                else if (j == 2) sDices[i] = new Button("Rotate " + j + "nd S Dice");
+                else if (j == 3) sDices[i] = new Button("Rotate " + j + "rd  S Dice");
+                else if (j == 4) sDices[i] = new Button("Rotate " + j + "th S Dice");
+                else if (j == 5) sDices[i] = new Button("Rotate " + j + "th S Dice");
+                else if (j == 6) sDices[i] = new Button("Rotate " + j + "th S Dice");
                 sDices[i].setLayoutX(100);
                 sDices[i].setLayoutY(90 + 125 * i);
                 sDices[i].setEffect(new SepiaTone());
                 rotatedice(sDices[i], specialDiceImages[i]);
                 group.getChildren().addAll(sDices[i]);
             }
+
             for (int i = 0; i < specialDiceImages.length; i++) {
                 specialDiceImages[i].setFitHeight(50);
                 specialDiceImages[i].setFitWidth(50);
@@ -274,41 +407,16 @@ public class Game extends Application {
                 specialDiceImages[i].setLayoutY(30 + 120 * i);
                 group.getChildren().add(specialDiceImages[i]);
             }
+
             for (int i = 0; i < specialDiceImages.length; i++) {
                 onDragDetected(specialDiceImages[i], i);
-
             }
-            for (int i = 1; i < tiles.length - 1; i++) {
-                for (int j = 1; j < tiles[i].length - 1; j++) {
-                    onDragOver(tiles[i][j], tiles, i, j);
-                    onDragEntered(tiles[i][j]);
-                    onDragExit(tiles[i][j]);
-                    onDragDroppedForSpecialDices(tiles[i][j], specialDiceImages);
-
-                }
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //Normal dices
         Button button = new Button("Throw a dice");
-        button.setLayoutX(800);
-        button.setLayoutY(650);
+        button.setLayoutX(760);
+        button.setLayoutY(600);
         button.setEffect(new DropShadow());
         group.getChildren().add(button);
         FXimageView[] diceImages  = new FXimageView[4];
@@ -378,7 +486,7 @@ public class Game extends Application {
                 diceImages[i].setFitHeight(50);
                 diceImages[i].setFitWidth(50);
                 diceImages[i].setLayoutX(300+120*i);
-                diceImages[i].setLayoutY(600);
+                diceImages[i].setLayoutY(700);
                 group.getChildren().add(diceImages[i]);
             }
 
@@ -388,7 +496,7 @@ public class Game extends Application {
                 else if(j ==2 ) rbs[i] = new Button("Rotate "+ j +"nd Dice" );
                 else if(j == 3 ||j == 4 ) rbs[i] = new Button("Rotate "+ j +"th Dice" );
                 rbs[i].setLayoutX(270+125*i);
-                rbs[i].setLayoutY(700);
+                rbs[i].setLayoutY(800);
                 rbs[i].setEffect(new SepiaTone());
                 rotatedice(rbs[i],diceImages[i]);
                 group.getChildren().addAll(rbs[i]);
@@ -404,9 +512,42 @@ public class Game extends Application {
                     onDragOver(tiles[i][j],tiles,i,j);
                     onDragEntered(tiles[i][j]);
                     onDragExit(tiles[i][j]);
-                    onDragDropped(tiles[i][j],diceImages);
+                    onDragDropped(tiles[i][j],diceImages,specialDiceImages);
                 }
             }
+
+
+            diceRollStorage.add(dices);
+            if(num >= 1){
+                String vaildMove = RailroadInk.generateMove(boardString,diceRollStorage.get(num-1));
+                boardString = boardString + vaildMove;
+                makePlacement(boardString);
+                opponentFinalSocre = RailroadInk.getBasicScore(boardString);
+                opponentGetBasicScore.setText(""+opponentFinalSocre);
+            }
+            num ++;
+
+            round++;
+            showRound.setText("Round: " + round);
+
+            if(round > 7){
+                clearGroup();
+                Text finalMessage = new Text();
+                if(playerFinalScore > opponentFinalSocre){
+                    finalMessage.setText("Congratulations! You defeated your opponent!");
+                }
+                if(playerFinalScore == opponentFinalSocre){
+                    finalMessage.setText("What a fierce game! You are tied with your opponent!");
+                }if(playerFinalScore < opponentFinalSocre){
+                    finalMessage.setText("What a pity, you lost the game.");
+                }
+                finalMessage.setFont(Font.font(null,FontWeight.BOLD,35));
+                finalMessage.setX(250);
+                finalMessage.setY(400);
+                group.getChildren().add(finalMessage);
+
+            }
+
 
         });
 
@@ -432,12 +573,168 @@ public class Game extends Application {
 
     }
 
+    public static void makePlacement(String placement){
+        int numberOfTiles = placement.length() / 5;
+        String[] arrayOfTiles = new String[numberOfTiles];
+
+//        To spilt Board String into tile Placement string
+        for (int i = 0; i < placement.length(); i += 5) {
+            arrayOfTiles[i / 5] = placement.substring(i, i + 5);
+        }
+
+        for(int i = 0; i < arrayOfTiles.length;i++) {
+            int orientaion = 0;
+            int row = arrayOfTiles[i].charAt(2) - 'A' +1;
+            int column = arrayOfTiles[i].charAt(3) - '0' +1;
+
+            if(arrayOfTiles[i].substring(0,2).equals("A0")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A0);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A0);
+                    a.setScaleX(-1);
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("A1")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A1);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A1);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("A2")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A2);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A2);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("A3")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A3);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A3);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("A4")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A4);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A4);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("A5")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(A5);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(A5);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("B0")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(B0);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(B0);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("B1")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(B1);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(B1);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+            else if(arrayOfTiles[i].substring(0,2).equals("B2")){
+                ImageView a = new ImageView();
+
+                if(arrayOfTiles[i].charAt(4) - '0' <=3) {
+                    orientaion = arrayOfTiles[i].charAt(4) - '0';
+                    a.setImage(B2);
+                }
+                else {orientaion = arrayOfTiles[i].charAt(4) - '0' - 4;
+                    a.setImage(B2);
+                    a.setScaleX(-1);
+
+                }
+                Viewer.postionImage(computerBoard,a,column,row,orientaion);
+            }
+
+        }
+        }
+
     public static void rotatedice(Button rb,FXimageView fiv){
         rb.setOnAction(e->{
             fiv.setRotate(fiv.getRotate() + 90);
             fiv.orientation = fiv.orientation + 1;
         });
     }
+
+    public static void clearGroup(){
+        group.getChildren().clear();
+    }
+
 
     public static void onDragDetected(FXimageView fxImageView,int cleanNum){
         fxImageView.setOnDragDetected(e ->{
@@ -462,233 +759,260 @@ public class Game extends Application {
         });
     }
 
-    public static void onDragOver(FXimageView fXimageView,FXimageView[][] board,int row,int col){
+    public static void onDragOver(FXimageView fXimageView,FXimageView[][] board,int row,int col) {
 
-        fXimageView.setOnDragOver(e ->{
-            String transferName = e.getDragboard().getString().substring(0,2);
-            String tansferOrientation = e.getDragboard().getString().substring(2,3);
-            String tansferPassage =e.getDragboard().getString().substring(3,7);
+        fXimageView.setOnDragOver(e -> {
+            String transferName = e.getDragboard().getString().substring(0, 2);
+            String tansferOrientation = e.getDragboard().getString().substring(2, 3);
+            String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation + tansferPassage;
+            String check = score + placementInfo.substring(0,5);
+            System.out.println(check);
 
-
-            if(!fXimageView.name.equals("none") && !fXimageView.ifFilled){
+            if (!fXimageView.name.equals("none") && !fXimageView.ifFilled) {
 //              gates
-                if(fXimageView.name.charAt(0) == 'A'){
-                    if(fXimageView.gate == placementInfo.charAt(5)){
+                if (fXimageView.name.charAt(0) == 'A') {
+                    if (fXimageView.gate == placementInfo.charAt(5)) {
+                        if(RailroadInk.isValidPlacementSequence(check))
                         e.acceptTransferModes(TransferMode.ANY);
                     }
-                }else if(fXimageView.name.charAt(0) == 'B'){
-                    if(fXimageView.name.charAt(1) == '0'){
-                        if(fXimageView.gate == placementInfo.charAt(8)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }else if(fXimageView.name.charAt(1) == '6'){
-                        if(fXimageView.gate == placementInfo.charAt(6)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-                }else if(fXimageView.name.charAt(0) == 'D'){
-                    if(fXimageView.name.charAt(1) == '0'){
-                        if(fXimageView.gate == placementInfo.charAt(8)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-                    else if(fXimageView.name.charAt(1) == '6'){
-                        if(fXimageView.gate == placementInfo.charAt(6)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-                    }else if(fXimageView.name.charAt(0) == 'F'){
-                        if(fXimageView.name.charAt(1) == '0'){
-                            if(fXimageView.gate == placementInfo.charAt(8)){
+                } else if (fXimageView.name.charAt(0) == 'B') {
+                    if (fXimageView.name.charAt(1) == '0') {
+                        if (fXimageView.gate == placementInfo.charAt(8)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                                 e.acceptTransferModes(TransferMode.ANY);
-                            }
-                        }else if(fXimageView.name.charAt(1) == '6'){
-                            if(fXimageView.gate == placementInfo.charAt(6)){
-                                e.acceptTransferModes(TransferMode.ANY);
-                            }
                         }
-                } else if(fXimageView.name.charAt(0) == 'G'){
-                    if(fXimageView.gate == placementInfo.charAt(7)){
-                        e.acceptTransferModes(TransferMode.ANY);
+                    } else if (fXimageView.name.charAt(1) == '6') {
+                        if (fXimageView.gate == placementInfo.charAt(6)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                                e.acceptTransferModes(TransferMode.ANY);
+                        }
                     }
+                } else if (fXimageView.name.charAt(0) == 'D') {
+                    if (fXimageView.name.charAt(1) == '0') {
+                        if (fXimageView.gate == placementInfo.charAt(8)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                                e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    } else if (fXimageView.name.charAt(1) == '6') {
+                        if (fXimageView.gate == placementInfo.charAt(6)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                                e.acceptTransferModes(TransferMode.ANY);
+                        }
                     }
+                } else if (fXimageView.name.charAt(0) == 'F') {
+                    if (fXimageView.name.charAt(1) == '0') {
+                        if (fXimageView.gate == placementInfo.charAt(8)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                                e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    } else if (fXimageView.name.charAt(1) == '6') {
+                        if (fXimageView.gate == placementInfo.charAt(6)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                                e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    }
+                } else if (fXimageView.name.charAt(0) == 'G') {
+                    if (fXimageView.gate == placementInfo.charAt(7)) {
+                        if(RailroadInk.isValidPlacementSequence(check))
+                            e.acceptTransferModes(TransferMode.ANY);
+                    }
+                }
 
 //               normal tiles
-                String pi = placementInfo.substring(0,5);
+                String pi = placementInfo.substring(0, 5);
 //                check top-left
-                if(row == 1 && col == 1){
-                    if(board[1][2].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[1][2].name)){
+                if (row == 1 && col == 1) {
+                    if (board[1][2].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[1][2].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
-                    if(board[2][1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[2][1].name)){
+                    if (board[2][1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[2][1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
                 }
 //                check top-right
 
-                if(row == 1 && col == 7){
-                    if(board[1][6].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[1][6].name)){
+                if (row == 1 && col == 7) {
+                    if (board[1][6].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[1][6].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
-                    if(board[2][7].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[2][7].name)){
+                    if (board[2][7].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[2][7].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
                 }
 //               check bottom-left
-                if(row == 7 && col == 1){
-                    if(board[7][2].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[7][2].name)){
+                if (row == 7 && col == 1) {
+                    if (board[7][2].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[7][2].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
-                    if(board[6][1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[6][1].name)){
+                    if (board[6][1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[6][1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
                 }
 //              check bottom-right
-                if(row == 7 && col == 7){
-                    if(board[7][6].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[7][6].name)){
+                if (row == 7 && col == 7) {
+                    if (board[7][6].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[7][6].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
-                    if(board[6][7].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[6][7].name)){
+                    if (board[6][7].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[6][7].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
                 }
 
 //                check top-edge
-                if(row == 1 && col != 1 && col != 7 ){
-                    if(board[row][col+1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col+1].name)){
+                if (row == 1 && col != 1 && col != 7) {
+                    if (board[row][col + 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col + 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row][col-1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col-1].name)){
+                    if (board[row][col - 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col - 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row+1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row+1][col].name)){
+                    if (board[row + 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row + 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
                 }
 
 //                check left-edge
-                if(col == 1 && row != 1 && row != 7 ){
-                    if(board[row][col+1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col+1].name)){
+                if (col == 1 && row != 1 && row != 7) {
+                    if (board[row][col + 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col + 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row+1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row+1][col].name)){
+                    if (board[row + 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row + 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row-1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row-1][col].name)){
+                    if (board[row - 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row - 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
                 }
 //                check bottom-edge
-                if(row ==7 && col != 1 && col != 7){
-                    if(board[row][col+1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col+1].name)){
+                if (row == 7 && col != 1 && col != 7) {
+                    if (board[row][col + 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col + 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row][col-1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col-1].name)){
+                    if (board[row][col - 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col - 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row-1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row-1][col].name)){
+                    if (board[row - 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row - 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
                 }
 //                check right-edge
-                if(col ==7 && row != 1 && row != 7){
-                    if(board[row][col-1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col-1].name)){
+                if (col == 7 && row != 1 && row != 7) {
+                    if (board[row][col - 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col - 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row+1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row+1][col].name)){
+                    if (board[row + 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row + 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
-                    if(board[row-1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row-1][col].name)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-
-                }
-
-                if(row > 1 && row <7 && col > 1 && col <7){
-                    if(board[row][col-1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col-1].name)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-
-                    if(board[row][col+1].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row][col+1].name)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-
-                    if(board[row+1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row+1][col].name)){
-                            e.acceptTransferModes(TransferMode.ANY);
-                        }
-                    }
-
-                    if(board[row-1][col].ifFilled){
-                        if(RailroadInk.areConnectedNeighbours(pi,board[row-1][col].name)){
+                    if (board[row - 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row - 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
                             e.acceptTransferModes(TransferMode.ANY);
                         }
                     }
 
                 }
 
+                if (row > 1 && row < 7 && col > 1 && col < 7) {
+                    if (board[row][col - 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col - 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                            e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    }
 
+                    if (board[row][col + 1].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row][col + 1].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                            e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    }
 
+                    if (board[row + 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row + 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                            e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    }
 
+                    if (board[row - 1][col].ifFilled) {
+                        if (RailroadInk.areConnectedNeighbours(pi, board[row - 1][col].name)) {
+                            if(RailroadInk.isValidPlacementSequence(check))
+                            e.acceptTransferModes(TransferMode.ANY);
+                        }
+                    }
+                }
+                }
 
-
-            }
         });
+
     }
 
     public static void onDragEntered(FXimageView fXimageView){
@@ -704,80 +1028,51 @@ public class Game extends Application {
         });
     }
 
-    public static void onDragDropped(FXimageView fXimageView,FXimageView[] cleanImage) {
+    public static void onDragDropped(FXimageView fXimageView,FXimageView[] cleanImage,FXimageView[] cleanSpecialImage) {
         fXimageView.setOnDragDropped(e -> {
 
             String transferName = e.getDragboard().getString().substring(0, 2);
             String tansferOrientation = e.getDragboard().getString().substring(2, 3);
-            String tansferPassage = e.getDragboard().getString().substring(3, 7);
             String placementInfo = transferName + fXimageView.name + tansferOrientation;
 
-
-            boolean success = false;
+            boolean success;
             fXimageView.setImage(e.getDragboard().getImage());
             fXimageView.name = placementInfo;
             fXimageView.ifFilled = true;
+
             success = true;
-            basicScore = new Label("Score");
-            basicScore.setText("score");
-            basicScore.setFont(new Font("Arial", 20));
-            basicScore.setTextFill(Color.BLACK);
-            basicScore.setLayoutX(20);
-            basicScore.setLayoutY(20);
-            group.getChildren().add(basicScore);
-            getBasicScore = new Label("getScore");
-            getBasicScore.setText(score+String.valueOf(RailroadInk.getBasicScore(placementInfo)));
-            getBasicScore.setFont(new Font("Arial", 15));
-            getBasicScore.setTextFill(Color.BLACK);
-            getBasicScore.setLayoutX(20);
-            getBasicScore.setLayoutY(45);
-            group.getChildren().add(getBasicScore);
+
+            score = score + placementInfo;
+            playerFinalScore = RailroadInk.getBasicScore(score);
+            getBasicScore.setText(""+playerFinalScore);
             int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
-            cleanImage[i].setImage(null);
+            if(placementInfo.charAt(0) == 'A' || placementInfo.charAt(0) == 'B'){
+                cleanImage[i].setImage(null);
+            }
+
+            if(placementInfo.charAt(0) == 'S'){
+                cleanSpecialImage[i].setImage(null);
+                count++;
+            }
+
+            if(count>=3){
+                for(int j = 0;j <cleanSpecialImage.length;j++){
+                    cleanSpecialImage[j].setImage(null);
+
+                }
+            }
+
             e.setDropCompleted(success);
             e.consume();
         });
     }
-    public String getScore(String A, String B){
-       return A = A+B;
-
-    }
-
-    public static void onDragDroppedForSpecialDices(FXimageView fXimageView,FXimageView[] cleanImage) {
-        int num = 3;
-        if (count>=3){
-            return;
-        }else {
-            fXimageView.setOnDragDropped(e -> {
-
-                String transferName = e.getDragboard().getString().substring(0, 2);
-                String tansferOrientation = e.getDragboard().getString().substring(2, 3);
-                String tansferPassage = e.getDragboard().getString().substring(3, 7);
-                String placementInfo = transferName + fXimageView.name + tansferOrientation;
-
-
-                boolean success = false;
-                fXimageView.setImage(e.getDragboard().getImage());
-                fXimageView.name = placementInfo;
-                fXimageView.ifFilled = true;
-                success = true;
-
-                int i = Integer.parseInt(e.getDragboard().getString().substring(7, 8));
-                cleanImage[i].setImage(null);
-                e.setDropCompleted(success);
-                e.consume();
-            });
-        }
-        count++;
-    }
-
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Railroad Ink: Deep Blue Edition");
-        group.getChildren().add(board);
         scene = new Scene(group,screenX,screenY);
         fillInBoard();
+        group.getChildren().addAll(board,computerBoard,playerScore,opponentScore,playerTitle,opponentTitle,showRound);
         this.creatDiceforAround();
         primaryStage.setScene(scene);
         primaryStage.show();

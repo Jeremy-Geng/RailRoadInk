@@ -830,7 +830,6 @@ public class RailroadInk {
             os = os + a.get(i);
         }
 
-        System.out.println(os);
         return os;
     }
 
@@ -930,6 +929,16 @@ public class RailroadInk {
     }
 
     public static boolean checkWhetherCanBeFilled(Board grid, boolean ifValidPlaced, int m, int n,String placeInfo,Dice dice){
+//  check gates
+       if(m == 0 && (n == 1 || n == 3 || n == 5)){
+           if(dice.getNorthPassage() == grid.board[m][n].getGate()) ifValidPlaced = true;
+       }else if ( m == 6 &&( n == 1 || n == 3 || n == 5)){
+           if(dice.getSouthPassage() == grid.board[m][n].getGate()) ifValidPlaced = true;
+       }else if( n == 0 && ( m == 1 || m == 3|| m ==5)){
+           if(dice.getWestPassage() == grid.board[m][n].getGate())  ifValidPlaced = true;
+       }else if(n == 6 && ( m == 1 || m == 3|| m ==5)){
+           if(dice.getEastPassage() == grid.board[m][n].getGate()) ifValidPlaced = true;
+        }
 //  check normal tiles
         if(m == 0 && n == 0){
             if(grid.board[0][1].ifFilled){
@@ -1425,6 +1434,7 @@ public class RailroadInk {
     }
 
     public static void main(String[] args) {
-            isValidPlacementSequence("A3D61A3D53B0C52A0B52A2B63A4D41B0E60A0F61A3D31A3D23A2G30B0F34");
+        String s = generateMove("","A1A5A0B1");
+
     }
 }
