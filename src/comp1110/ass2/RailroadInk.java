@@ -1434,7 +1434,6 @@ public class RailroadInk {
     }
 
     public static void main(String[] args) {
-        String s = generateMove("","A1A5A0B1");
 
     }
 }
